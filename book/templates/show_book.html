@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1 class="text-center">All books list!</h1>
+  <div style="width: 80%; background-color:magenta; margin: auto; padding: 2%; border-radius: 1cap;">
+    {% if data %}
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#ID</th>
+            <th scope="col">Book Name</th>
+            <!-- <th scope="col">Author Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">First publication</th>
+            <th scope="col">Last publication</th>
+            <th scope="col">Actions</th> -->
+          </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+              
+          <tr>
+            <td>{{item.id}}</td>
+            <td><a class="btn btn-info"  style="background-color:chocolate; border-radius: 1cap;" href=" {% url 'book_details' item.id  %}">{{item.book_name}}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <h3>No data available!!!!</h3>
+      {% endif %}
+  </div>
+{% endblock  %}
