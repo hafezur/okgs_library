@@ -10,8 +10,14 @@ from book.models import BookStoreModel
 #class base view
 from django.views.generic import TemplateView
 class my_template_view(TemplateView):
-    template_name='index.html'
+    template_name='part_of_index.html'
+
+class login_interface_view(TemplateView):
+    template_name='login_interface.html'
     
+
+class userInterfaceView(TemplateView):
+     template_name ='user_interface.html'
 # ----------------------**********a simple divider **********--------------------------------------
 # def store_book(request):
 #     if request.method =='POST':

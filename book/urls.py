@@ -1,3 +1,4 @@
+from django.contrib import admin
 from  django.urls import path
 #from . views import home
 #from book.views import home,store_book,show_books,edit_books,delete_book
@@ -5,7 +6,8 @@ from . import views
 urlpatterns = [
     #path('',views.home), # function base view
     path('',views.my_template_view.as_view(),name='homepage'), # class base viewS
-    
+    path('login_interface/',views.login_interface_view.as_view(),name='login_interface'), # class base viewS
+    path('user_interface/', views.userInterfaceView.as_view(), name='get_user_interface'),
     #path('store_new_book/',views.store_book, name='store_book'),
     path('store_new_book/',views.BookFormView.as_view(), name='store_book'),
     
