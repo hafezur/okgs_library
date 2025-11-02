@@ -11,9 +11,6 @@ from book.models import BookStoreModel
 from django.views.generic import TemplateView
 class my_template_view(TemplateView):
     template_name='index.html'
-    def get_context_data(self,**kwargs): # this function is used for passing data from backend
-        context=super().get_context_data(**kwargs)
-        return context
     
 # ----------------------**********a simple divider **********--------------------------------------
 # def store_book(request):
