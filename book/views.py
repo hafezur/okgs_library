@@ -10,15 +10,10 @@ from book.models import BookStoreModel
 #class base view
 from django.views.generic import TemplateView
 class my_template_view(TemplateView):
-    template_name='home.html'
+    template_name='index.html'
     def get_context_data(self,**kwargs): # this function is used for passing data from backend
         context=super().get_context_data(**kwargs)
-        context_like={'name':'Hafiz', 'age':22}# this is the example of data passing from backend.
-        print(context_like)
-        print(kwargs)
-        context_like.update(kwargs)
-        print(context_like)
-        return context_like
+        return context
     
 # ----------------------**********a simple divider **********--------------------------------------
 # def store_book(request):

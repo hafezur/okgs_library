@@ -4,7 +4,7 @@ from  django.urls import path
 from . import views
 urlpatterns = [
     #path('',views.home), # function base view
-    path('<int:roll>/',views.my_template_view.as_view(),{'author':'Mahadi'},name='homepage'), # class base view
+    path('',views.my_template_view.as_view(),name='homepage'), # class base viewS
     
     #path('store_new_book/',views.store_book, name='store_book'),
     path('store_new_book/',views.BookFormView.as_view(), name='store_book'),
