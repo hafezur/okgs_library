@@ -1,32 +1,57 @@
 {% extends "index.html" %}
 {% block content %}
-  <h1 class="text-center">All books list!</h1>
-  <div style="width: 80%; background-color:magenta; margin: auto; padding: 2%; border-radius: 1cap;">
-    {% if data %}
-    <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">#ID</th>
-            <th scope="col">Book Name</th>
-            <!-- <th scope="col">Author Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">First publication</th>
-            <th scope="col">Last publication</th>
-            <th scope="col">Actions</th> -->
-          </tr>
-        </thead>
-        <tbody>
-            {% for item in data %}
-              
-          <tr>
-            <td>{{item.id}}</td>
-            <td><a class="btn btn-info"  style="background-color:chocolate; border-radius: 1cap;" href=" {% url 'book_details' item.id  %}">{{item.book_name}}</a></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {% else %}
-      <h3>No data available!!!!</h3>
-      {% endif %}
+
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-primary">📖 All Books in Library</h1>
+    <p class="text-muted">Browse through the list of all available books in the OKGS Dynamic Library.</p>
+    <hr class="w-25 mx-auto">
   </div>
-{% endblock  %}
+
+  <div class="card shadow border-0 rounded-4">
+    <div class="card-body p-4">
+      {% if data %}
+      <div class="table-responsive">
+        <table class="table table-hover align-middle text-center">
+          <thead class="table-primary">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Book Name</th>
+              <th scope="col">Author</th>
+              <th scope="col">Category</th>
+              <th scope="col">First Publication</th>
+              <th scope="col">Last Publication</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in data %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td class="fw-semibold">{{ item.book_name }}</td>
+              <td>{{ item.author }}</td>
+              <td>{{ item.category }}</td>
+              <td>{{ item.first_pub }}</td>
+              <td>{{ item.last_pub }}</td>
+              <td>
+                <a href="{% url 'book_details' item.id %}" 
+                   class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                   Details
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="text-center py-4">
+        <h4 class="text-danger fw-semibold">No books found in the library!</h4>
+        <p class="text-muted">Please add some books to view them here.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,12 +1,19 @@
 {% extends "index.html" %}
 {% load crispy_forms_tags %}
+
 {% block content %}
-  <div style="width:50%; margin:auto;">
-    <h2>Welcome to book store management</h2>
-    <form method="post" method="/show_books/">
+<div class="container my-5">
+  <div class="card shadow-lg rounded-4" style="max-width: 600px; margin: auto;">
+    <div class="card-body p-4">
+      <h2 class="text-center mb-4 text-primary fw-bold">Welcome to OKGS Dynamic Library</h2>
+      <form method="post" action="{% url 'show_books' %}">
         {% csrf_token %}
-        {{form|crispy}}
-        <button class="btn btn-primary " type="submit" > Submit </button>
-    </form>
+        {{ form|crispy }}
+        <div class="d-grid mt-3">
+          <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        </div>
+      </form>
+    </div>
   </div>
-{% endblock  %}
+</div>
+{% endblock %}
