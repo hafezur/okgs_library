@@ -155,5 +155,10 @@ class BookDetailView(DetailView):
     context_object_name='item'
     pk_url_kwarg='id'
 
+class News_Events(TemplateView):
+    template_name='news&event.html'
+    
+
+
 
 

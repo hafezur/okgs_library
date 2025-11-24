@@ -1,0 +1,182 @@
+{% extends "index.html" %}
+{% block content %}
+
+<style>
+  :root{
+    --accent: #2563eb;
+    --muted: #6b7280;
+    --card-radius: 12px;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  }
+
+  /* Background Image */
+  body{
+    background: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80') center/cover fixed no-repeat;
+    color:#0f172a;
+  }
+
+  /* Transparent overlay wrapper */
+  .content-wrapper{
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(4px);
+    padding: 25px;
+    border-radius: 14px;
+  }
+
+  .hero{
+    background: linear-gradient(90deg, rgba(37,99,235,0.20), rgba(16,185,129,0.18));
+    border-radius:12px;
+    padding:28px;
+  }
+
+  .event-card{
+    border-radius:var(--card-radius);
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(3px);
+    box-shadow:0 6px 18px rgba(15,23,42,0.08);
+  }
+
+  .tag{font-size:.75rem;padding:.25rem .5rem;border-radius:999px;background:#eef2ff;color:var(--accent);}  
+  .muted{color:var(--muted)}
+  .search-input{max-width:540px}
+  .calendar-dot{width:10px;height:10px;border-radius:50%}
+
+  @media (max-width:575px){
+    .hero{padding:18px}
+    .content-wrapper{padding:15px}
+  }
+</style>
+
+<body>
+<div class="container py-5 content-wrapper">
+
+  <header class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+      <h1 class="h4 mb-1">Library — News & Events</h1>
+      <p class="muted mb-0">Stay up to date with library announcements, workshops and events.</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-secondary" id="filterBtn">Filter</button>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add News / Event</button>
+    </div>
+  </header>
+
+  <section class="hero mb-4">
+    <div class="row g-3 align-items-center">
+      <div class="col-md-6">
+        <h2 class="h5 mb-1">Latest announcement</h2>
+        <p class="mb-0 muted">Check the calendar for upcoming seminars, reading clubs and holiday schedules.</p>
+      </div>
+      <div class="col-md-6 d-flex justify-content-md-end">
+        <div class="input-group search-input">
+          <input id="searchInput" type="search" class="form-control" placeholder="Search news or events...">
+          <button class="btn btn-outline-secondary" id="clearSearch">Clear</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-8">
+      <div class="row g-3" id="cardsContainer">
+
+        <!-- sample card -->
+        <div class="col-12 col-md-6" data-type="news" data-title="New Opening Hours" data-date="2025-11-20">
+          <article class="p-3 event-card h-100">
+            <div class="d-flex align-items-start gap-3">
+              <div style="width:68px;flex-shrink:0">
+                <div class="bg-white text-center p-2 rounded" style="border:1px solid #eef2ff">
+                  <div class="fs-5 fw-semibold">20</div>
+                  <div class="muted" style="font-size:.85rem">Nov</div>
+                </div>
+              </div>
+              <div class="flex-grow-1">
+                <h3 class="h6 mb-1">New Opening Hours</h3>
+                <p class="muted mb-2" style="font-size:.9rem">From Nov 20, 2025 library opening hours will be extended on weekdays.</p>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div>
+                    <span class="tag me-2">Announcement</span>
+                    <small class="muted">Admin • Published 2025-11-15</small>
+                  </div>
+                  <div>
+                    <button class="btn btn-sm btn-outline-primary viewBtn" data-bs-toggle="modal" data-bs-target="#viewModal">View</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="col-12 col-md-6" data-type="event" data-title="Author Meet & Greet" data-date="2025-12-05">
+          <article class="p-3 event-card h-100">
+            <div class="d-flex align-items-start gap-3">
+              <div style="width:68px;flex-shrink:0">
+                <div class="bg-white text-center p-2 rounded" style="border:1px solid #fff4e6">
+                  <div class="fs-5 fw-semibold">05</div>
+                  <div class="muted" style="font-size:.85rem">Dec</div>
+                </div>
+              </div>
+              <div class="flex-grow-1">
+                <h3 class="h6 mb-1">Author Meet & Greet</h3>
+                <p class="muted mb-2" style="font-size:.9rem">Join us for a session with local author Rahim Ahmed—Q&A and book signing.</p>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div>
+                    <span class="tag me-2">Event</span>
+                    <small class="muted">Registration required • 10:00 AM</small>
+                  </div>
+                  <div>
+                    <button class="btn btn-sm btn-outline-primary viewBtn" data-bs-toggle="modal" data-bs-target="#viewModal">View</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+      </div>
+    </div>
+
+    <aside class="col-md-4">
+      <div class="p-3 event-card mb-3">
+        <h4 class="h6 mb-2">Upcoming</h4>
+        <ul class="list-unstyled mb-0">
+          <li class="d-flex align-items-center mb-2">
+            <div class="me-2 calendar-dot" style="background:#2563eb"></div>
+            <div>
+              <div class="fw-semibold">Author Meet & Greet</div>
+              <small class="muted">Dec 5, 2025 • 10:00 AM</small>
+            </div>
+          </li>
+          <li class="d-flex align-items-center mb-2">
+            <div class="me-2 calendar-dot" style="background:#f97316"></div>
+            <div>
+              <div class="fw-semibold">Winter Reading Club</div>
+              <small class="muted">Dec 15 — Jan 10, 2026</small>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="p-3 event-card">
+        <h4 class="h6 mb-2">Filter by type</h4>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-outline-secondary flex-grow-1 filterType active" data-type="all">All</button>
+          <button class="btn btn-sm btn-outline-secondary flex-grow-1 filterType" data-type="news">News</button>
+          <button class="btn btn-sm btn-outline-secondary flex-grow-1 filterType" data-type="event">Events</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="text-center muted mt-4">© 2025 Your Library Name — Manage news & events from admin panel.</footer>
+</div>
+
+<!-- JS (unchanged from your template) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // SAME JS CODE FROM YOUR TEMPLATE (search, filter, view, add)
+  /* ... JS unchanged ... */
+</script>
+
+</body>
+{% endblock %}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Modern Library — Catalog</title>
+<style>
+:root{--bg:#f6f8fb;--card:#ffffff;--muted:#6b7280;--accent:#ef4444;--radius:10px;--max:1100px;font-family:Inter,system-ui,Segoe UI,Roboto}
+body{margin:0;background:var(--bg);color:#0f1724}
+.wrap{max-width:var(--max);margin:28px auto;padding:18px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.searchbar{display:flex;gap:8px}
+.searchbar input{padding:10px;border-radius:8px;border:1px solid #e6e9ef}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:18px;margin-top:18px}
+.panel{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(12,16,40,0.06)}
+.filters label{display:block;margin-bottom:8px;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.book{padding:12px;border-radius:10px;border:1px solid #eef2f7;background:linear-gradient(180deg,white, #fbfdff)}
+.book img{width:100%;height:170px;object-fit:cover;border-radius:6px}
+.meta{margin-top:8px}
+.meta h4{margin:0 0 6px;font-size:16px}
+.meta p{color:var(--muted);margin:0;font-size:13px}
+.pagination{display:flex;gap:8px;justify-content:center;margin-top:18px}
+.page{padding:8px 12px;border-radius:8px;border:1px solid #e6e9ef}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top">
+<h2>Catalog</h2>
+<div class="searchbar">
+<input placeholder="Search books, authors, ISBN..." />
+<button class="page">Search</button>
+</div>
+</div>
+
+
+<div class="layout">
+<aside class="panel filters">
+<h3>Filters</h3>
+<div style="margin-top:8px">
+<label>Genre</label>
+<select style="width:100%;padding:8px;border-radius:8px;border:1px solid #eef2f7">
+<option>All</option>
+<option>Fiction</option>
+<option>Non-fiction</option>
+<option>Children</option>
+<option>Academic</option>
+</select>
+</div>
+<div style="margin-top:12px">
+<label>Availability</label>
+<div style="display:flex;gap:8px;margin-top:6px">
+<label><input type="checkbox" /> Available</label>
+<label><input type="checkbox" /> E-book</label>
+</div>
+</div>
+<div style="margin-top:12px">
+<label>Sort by</label>
+<select style="width:100%;padding:8px;border-radius:8px;border:1px solid #eef2f7">
+<option>Relevance</option>
+<option>Newest</option>
+<option>Popular</option>
+<option>Author A–Z</option>
+</select>
+</div>
+</aside>
+<main>
+<div class="panel">
+<div class="grid">
+<!-- repeat these book cards or populate dynamically -->
+<div class="book">
+<img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=60" alt="book" />
+<div class="meta">
+<h4>The Art of War</h4>
+<p>Sun Tzu • Strategy • Available</p>
+</div>
+</div>
+
+
+<div class="book">
+<img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=60" alt="book" />
+<div class="meta">
+<h4>Design Patterns</h4>
+<p>Gamma et al. • Programming • Borrowed</p>
+</div>
+</div>
+
+
+<div class="book">
+<img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&q=60" alt="book" />
+<div class="meta">
+<h4>Children's Tales</h4>
+<p>Illustrated Collection • Children • Available</p>
+</div>
+</div>
+
+
+<!-- more cards... -->
+
+
+</div>
+
+
+<div class="pagination">
+<button class="page">«</button>
+<button class="page">1</button>
+<button class="page">2</button>
+<button class="page">3</button>
+<button class="page">»</button>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body>
+</html>

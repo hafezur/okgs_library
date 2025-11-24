@@ -20,5 +20,6 @@ urlpatterns = [
     path('edit_book/<int:pk>',views.BookUpdateView.as_view(),name='edit_book'),
     
     # path('delete_book/<int:id>',views.delete_book, name='delete_book')
-    path('delete_book/<int:pk>',views.DeleteBookView.as_view(), name='delete_book')
+    path('delete_book/<int:pk>',views.DeleteBookView.as_view(), name='delete_book'),
+    path('news&events/',views.News_Events.as_view(), name='newsEvent'),
 ]

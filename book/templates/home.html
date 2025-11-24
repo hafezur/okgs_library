@@ -1,11 +1,58 @@
-{% extends "base.html" %}
-{% load crispy_forms_tags %}
-{% block content %}
-  <div style="width: 50%; margin: auto;">
-    <h1>Welcome to Book Store Management</h1>
-    <h1>name:{{name}}</h1>
-    <h1>age:{{age}}</h1>
-    <h1>roll:{{roll}}</h1>
-    <h1>Author:{{author}}</h1>
-  </div>
-{% endblock %}
+<!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content container">
+      <h1>WHAT’S ALL THE LIBRARIA?</h1>
+      <p>Libraria gives you access to <strong>Audiobooks, eBooks, Music, Movies and Comics.</strong></p>
+
+      <div class="row justify-content-center search-box">
+        <div class="col-md-3 mb-2 mb-md-0">
+          <input type="text" class="form-control" placeholder="Search by Keyword">
+        </div>
+        <div class="col-md-3 mb-2 mb-md-0">
+          <input type="text" class="form-control" placeholder="Search the Catalog">
+        </div>
+        <div class="col-md-3 mb-2 mb-md-0">
+          <select class="form-select">
+            <option selected>All Categories</option>
+            <option>Books</option>
+            <option>eBooks</option>
+            <option>DVDs</option>
+            <option>Magazines</option>
+            <option>Audio</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-search w-100">SEARCH</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories">
+    <div class="category cat-books">
+      <i class="bi bi-book"></i>
+      <h5>BOOKS</h5>
+      <p>Lorem ipsum dolor sit</p>
+    </div>
+    <div class="category cat-ebooks">
+      <i class="bi bi-tablet"></i>
+      <h5>EBOOKS</h5>
+      <p>Lorem ipsum dolor sit</p>
+    </div>
+    <div class="category cat-dvds">
+      <i class="bi bi-disc"></i>
+      <h5>DVDS</h5>
+      <p>Lorem ipsum dolor sit</p>
+    </div>
+    <div class="category cat-magazines">
+      <i class="bi bi-journal-richtext"></i>
+      <h5>MAGAZINES</h5>
+      <p>Lorem ipsum dolor sit</p>
+    </div>
+    <div class="category cat-audio">
+      <i class="bi bi-headphones"></i>
+      <h5>AUDIO</h5>
+      <p>Lorem ipsum dolor sit</p>
+    </div>
+  </section>

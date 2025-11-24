@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Modern Library — Landing</title>
+<style>
+:root{
+--bg:#0f1724; --card:#0b1220; --accent:#7c3aed; --muted:#9ca3af; --glass: rgba(255,255,255,0.04);
+--radius:12px; --max-width:1100px; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#071023 0%, #061428 100%);color:#e6eef8;line-height:1.45}
+.container{max-width:var(--max-width);margin:40px auto;padding:24px}
+header{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#4f46e5);display:flex;align-items:center;justify-content:center;font-weight:700}
+nav a{color:var(--muted);text-decoration:none;margin-left:18px}
+.hero{display:grid;grid-template-columns:1fr 420px;gap:32px;margin-top:28px;align-items:center}
+.hero-card{background:var(--card);padding:28px;border-radius:16px;box-shadow:0 6px 24px rgba(2,6,23,0.6)}
+h1{font-size:28px;margin:0 0 10px}
+p.lead{color:var(--muted);margin:0 0 20px}
+.search{display:flex;gap:8px}
+.search input{flex:1;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:var(--glass);color:inherit}
+.btn{background:var(--accent);border:none;padding:10px 14px;border-radius:10px;color:white;cursor:pointer}
+.features{display:flex;gap:12px;margin-top:22px}
+.feature{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:10px;flex:1}
+.right{padding:22px}
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.book{background:var(--glass);padding:12px;border-radius:12px}
+footer{margin-top:36px;color:var(--muted);font-size:14px}
+@media (max-width:900px){.hero{grid-template-columns:1fr;}.card-grid{grid-template-columns:repeat(2,1fr)}.right{order:-1}}
+@media (max-width:520px){.card-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<div class="brand">
+<div class="logo">ML</div>
+<div>
+<div style="font-weight:700">Modern Library</div>
+<div style="font-size:12px;color:var(--muted)">Discover • Read • Borrow</div>
+</div>
+</div>
+<nav>
+<a href="#">Catalog</a>
+<a href="#">Events</a>
+<a href="#">Membership</a>
+<a href="#">Contact</a>
+</nav>
+</header>
+<section class="hero">
+<div class="hero-card">
+<h1>Find your next favorite book</h1>
+<p class="lead">Search across 30,000+ titles, explore curated lists and join book events happening near you.</p>
+
+
+<div class="search">
+<input type="search" placeholder="Search by title, author, ISBN..." />
+<button class="btn">Search</button>
+</div>
+
+
+<div class="features">
+<div class="feature">
+<strong>Instant access</strong>
+<div style="color:var(--muted);font-size:13px">E-books & audiobooks available</div>
+</div>
+<div class="feature">
+<strong>Events</strong>
+<div style="color:var(--muted);font-size:13px">Workshops & reading clubs</div>
+</div>
+<div class="feature">
+<strong>Easy borrowing</strong>
+<div style="color:var(--muted);font-size:13px">Reserve online, pick up in person</div>
+</div>
+</div>
+
+
+<div class="card-grid">
+<div class="book">The Midnight Library — Fiction</div>
+<div class="book">Introduction to Algorithms — Academic</div>
+<div class="book">Becoming — Biography</div>
+</div>
+</div>
+
+
+<aside class="right hero-card">
+<h3 style="margin-top:0">Featured Category</h3>
+<p style="color:var(--muted);margin-bottom:12px">New Releases</p>
+<div style="display:flex;gap:10px;flex-direction:column">
+<div style="background:linear-gradient(90deg,var(--accent),#4f46e5);padding:12px;border-radius:10px">Shortlist: 2025 Must-Reads</div>
+<div style="background:rgba(255,255,255,0.02);padding:12px;border-radius:10px">Children's Picks: Illustrated</div>
+<div style="background:rgba(255,255,255,0.02);padding:12px;border-radius:10px">Study Aids: Exam Prep</div>
+</div>
+</aside>
+</section>
+<footer>
+© Modern Library • Built with care • <span style="color:var(--muted)">Open to public membership</span>
+</footer>
+</div>
+</body>
+</html>
