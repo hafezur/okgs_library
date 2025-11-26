@@ -1,75 +1,36 @@
 {% extends "index.html" %}
 {% block content %}
-<!-- HERO SECTION -->
-<section class="hero position-relative" style="
-    background: 
-      linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-      url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
-    color: #fff;
-    padding: 160px 20px;
-    text-align: center;
-">
-  <div class="hero-content container">
-    <h1 class="mb-3">WHAT'S ALL THE OKGS DYNAMIC LIBRARY?</h1>
-    <p class="mb-4">OKGS Dynamic Library gives you access to <strong>Audiobooks, eBooks, Music, Movies</strong> and <strong>Comics</strong>.</p>
-    <form class="row g-2 justify-content-center">
-      <div class="col-md-3 col-10">
-        <input type="text" class="form-control" placeholder="Search by Keyword">
-      </div>
-      <div class="col-md-3 col-10">
-        <input type="text" class="form-control" placeholder="Search the Catalog">
-      </div>
-      <div class="col-md-2 col-10">
-        <select class="form-select">
-          <option>All Categories</option>
-          <option>Books</option>
-          <option>eBooks</option>
-          <option>DVDs</option>
-          <option>Magazines</option>
-        </select>
-      </div>
-      <div class="col-md-2 col-10">
-        <button type="submit" class="btn btn-primary w-100">Search</button>
-      </div>
-    </form>
+<section class="hero">
+  <div class="hero-content">
+    <h1>Read. Learn. Explore</h1>
+    <p>Your Digital Library — Vibrant, Modern, Interactive.</p>
   </div>
 </section>
 
-<!-- CATEGORIES SECTION -->
-<section class="py-5">
-  <div class="container">
-    <div class="row g-4 category-section justify-content-center text-center">
-      <div class="col-md-4 col-lg-2 category-box books p-3 border rounded">
-        <i class="bi bi-book fs-1"></i>
-        <h5 class="mt-2">BOOKS</h5>
-        <p>Lorem ipsum dolor sit amet.</p>
-      </div>
-      <div class="col-md-4 col-lg-2 category-box ebooks p-3 border rounded">
-        <i class="bi bi-tablet-landscape fs-1"></i>
-        <h5 class="mt-2">EBOOKS</h5>
-        <p>Lorem ipsum dolor sit amet.</p>
-      </div>
-      <div class="col-md-4 col-lg-2 category-box dvds p-3 border rounded">
-        <i class="bi bi-disc fs-1"></i>
-        <h5 class="mt-2">DVDS</h5>
-        <p>Lorem ipsum dolor sit amet.</p>
-      </div>
-      <div class="col-md-4 col-lg-2 category-box magazines p-3 border rounded">
-        <i class="bi bi-journal fs-1"></i>
-        <h5 class="mt-2">MAGAZINES</h5>
-        <p>Lorem ipsum dolor sit amet.</p>
-      </div>
-      <div class="col-md-4 col-lg-2 category-box audio p-3 border rounded">
-        <i class="bi bi-music-note-beamed fs-1"></i>
-        <h5 class="mt-2">AUDIO</h5>
-        <p>Lorem ipsum dolor sit amet.</p>
-      </div>
-      <div class="col-md-4 col-lg-2 category-box eaudio p-3 border rounded">
-        <i class="bi bi-headphones fs-1"></i>
-        <h5 class="mt-2">EAUDIO</h5>
-        <p>Lorem ipsum dolor sit amet.</p>
-      </div>
-    </div>
+<section class="category-section">
+  <div class="category-box books">
+    <i class="bi bi-book" style="font-size:2rem;"></i>
+    <div class="category-title">Books</div>
+  </div>
+  <div class="category-box ebooks">
+    <i class="bi bi-journal-bookmark" style="font-size:2rem;"></i>
+    <div class="category-title">eBooks</div>
+  </div>
+  <div class="category-box audio">
+    <i class="bi bi-music-note-list" style="font-size:2rem;"></i>
+    <div class="category-title">Audio</div>
+  </div>
+  <div class="category-box magazines">
+    <i class="bi bi-newspaper" style="font-size:2rem;"></i>
+    <div class="category-title">Magazines</div>
+  </div>
+  <div class="category-box dvds">
+    <i class="bi bi-film" style="font-size:2rem;"></i>
+    <div class="category-title">DVDs</div>
+  </div>
+  <div class="category-box eaudio">
+    <i class="bi bi-headphones" style="font-size:2rem;"></i>
+    <div class="category-title">eAudio</div>
   </div>
 </section>
 {% endblock %}
