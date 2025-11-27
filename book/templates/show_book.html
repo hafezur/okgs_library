@@ -1,56 +1,124 @@
 {% extends "index.html" %}
 {% block content %}
 
-<div class="container py-5">
-  <div class="text-center mb-5">
-    <h1 class="fw-bold text-primary">📖 All Books in Library</h1>
-    <p class="text-muted">Browse through the list of all available books in the OKGS Dynamic Library.</p>
-    <hr class="w-25 mx-auto">
-  </div>
+<style>
+  /* Instagram-style gradient title */
+  .insta-title {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
 
-  <div class="card shadow border-0 rounded-4">
-    <div class="card-body p-4">
-      {% if data %}
-      <div class="table-responsive">
-        <table class="table table-hover align-middle text-center">
-          <thead class="table-primary">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Book Name</th>
-              <th scope="col">Author</th>
-              <th scope="col">Category</th>
-              <th scope="col">First Publication</th>
-              <th scope="col">Last Publication</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for item in data %}
-            <tr>
-              <td>{{ forloop.counter }}</td>
-              <td class="fw-semibold">{{ item.book_name }}</td>
-              <td>{{ item.author }}</td>
-              <td>{{ item.category }}</td>
-              <td>{{ item.first_pub }}</td>
-              <td>{{ item.last_pub }}</td>
-              <td>
-                <a href="{% url 'book_details' item.id %}" 
-                   class="btn btn-outline-primary btn-sm rounded-pill px-3">
-                   Details
-                </a>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      {% else %}
-      <div class="text-center py-4">
-        <h4 class="text-danger fw-semibold">No books found in the library!</h4>
-        <p class="text-muted">Please add some books to view them here.</p>
-      </div>
-      {% endif %}
+  /* Card grid styling */
+  .book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .book-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  }
+
+  .book-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+  }
+
+  .book-card h5 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .book-card p {
+    margin: 0.2rem 0;
+    font-size: 0.9rem;
+    color: #555;
+    text-align: center;
+  }
+
+  .btn-details {
+    background: linear-gradient(45deg, #f09433, #bc1888);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.9rem;
+    transition: background 0.3s, transform 0.3s;
+  }
+
+  .btn-details:hover {
+    background: linear-gradient(45deg, #bc1888, #f09433);
+    transform: scale(1.05);
+  }
+
+  /* Page background */
+  .library-bg {
+    background: linear-gradient(rgba(6, 21, 36, 0.6), rgba(6, 21, 36, 0.6)),
+                url("https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1500&q=80") 
+                center/cover no-repeat fixed;
+    padding: 80px 0;
+  }
+</style>
+
+<div class="library-bg">
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <h1 class="insta-title fw-bold mb-2">📖 All Books in Library</h1>
+      <p class="text-light">Browse through the collection of books available in the OKGS Dynamic Library.</p>
+      <hr class="w-25 mx-auto border-light">
     </div>
+
+    {% if data %}
+    <div class="book-grid">
+      {% for item in data %}
+      <div class="book-card">
+        <!-- Book Image -->
+        {% if item.book_image %}
+          <img src="{{ item.book_image.url }}" alt="{{ item.book_name }}">
+        {% else %}
+          <img src="https://via.placeholder.com/250x200?text=No+Image" alt="No Image">
+        {% endif %}
+
+        <!-- Book Info -->
+        <h5>{{ item.book_name }}</h5>
+        <p><strong>Author:</strong> {{ item.author }}</p>
+        <p><strong>Category:</strong> {{ item.category }}</p>
+        <p><strong>First Pub:</strong> {{ item.first_pub }}</p>
+        <p><strong>Last Pub:</strong> {{ item.last_pub }}</p>
+
+        <div class="text-center mt-3">
+          <a href="{% url 'book_details' item.id %}" class="btn btn-details">Details</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-4 text-light">
+      <h4 class="fw-semibold">No books found in the library!</h4>
+      <p>Please add some books to view them here.</p>
+    </div>
+    {% endif %}
   </div>
 </div>
 

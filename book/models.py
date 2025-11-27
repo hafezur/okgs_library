@@ -15,4 +15,5 @@ class BookStoreModel(models.Model):
     category=models.CharField(max_length=30,choices=CATEGORY)
     first_pub=models.DateTimeField(auto_now_add=True)# akdom first date dakhabe
     last_pub=models.DateTimeField(auto_now=True) # erpor thaka joto updata korbo sei date dakhabe.
+    book_image=models.ImageField(blank=True,null=True)
     

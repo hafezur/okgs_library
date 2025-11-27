@@ -157,6 +157,12 @@ class BookDetailView(DetailView):
 
 class News_Events(TemplateView):
     template_name='news&event.html'
+
+def registration(request):
+    return render(request, 'registration.html')
+
+def contact(request):
+    return render(request, 'contact.html')
     
 
 

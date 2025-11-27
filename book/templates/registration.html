@@ -1,0 +1,226 @@
+{% extends "index.html" %}
+{% block content %}
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .register-bg {
+    width: 100%;
+    min-height: 100vh;
+    padding: 70px 20px;
+    background: linear-gradient(135deg, #31039b, #5add03);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .signup-container {
+    width: 480px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 40px 35px;
+    border-radius: 25px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.9s ease-in-out;
+  }
+
+  .signup-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 700;
+    color: white;
+    font-size: 28px;
+  }
+
+  /* 2 fields same row */
+  .row {
+    display: flex;
+    gap: 15px;
+  }
+
+  .row .form-group {
+    flex: 1;
+  }
+
+  .form-group {
+    position: relative;
+    margin-bottom: 22px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    outline: none;
+    font-size: 15px;
+    color: #333;
+    transition: 0.3s ease;
+  }
+
+  .form-group textarea {
+    height: 70px;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: #ff5f6d;
+    background: white;
+  }
+
+  .form-group label {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    color: #777;
+    font-size: 15px;
+    pointer-events: none;
+    transition: 0.3s;
+  }
+
+  .form-group input:focus ~ label,
+  .form-group textarea:focus ~ label,
+  .form-group input:not(:placeholder-shown) ~ label,
+  .form-group textarea:not(:placeholder-shown) ~ label {
+    top: -8px;
+    left: 10px;
+    font-size: 12px;
+    background: white;
+    padding: 0 5px;
+    color: #ff5f6d;
+    border-radius: 5px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 14px;
+    background: #ff4b5c;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+  }
+
+  .btn:hover {
+    background: #ff2e43;
+  }
+
+  .login-link {
+    text-align: center;
+    margin-top: 20px;
+    color: white;
+    font-size: 15px;
+  }
+
+  .login-link a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .row {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="register-bg">
+
+  <div class="signup-container">
+    <h1>Create Account</h1>
+
+    <form>
+
+      <!-- First Name + Last Name -->
+      <div class="row">
+        <div class="form-group">
+          <input type="text" placeholder=" " required>
+          <label>First Name</label>
+        </div>
+
+        <div class="form-group">
+          <input type="text" placeholder=" " required>
+          <label>Last Name</label>
+        </div>
+      </div>
+
+      <!-- City + Region -->
+      <div class="row">
+        <div class="form-group">
+          <input type="text" placeholder=" " required>
+          <label>City</label>
+        </div>
+
+        <div class="form-group">
+          <input type="text" placeholder=" " required>
+          <label>Region / State</label>
+        </div>
+      </div>
+
+      <!-- Country -->
+      <div class="form-group">
+        <input type="text" placeholder=" " required>
+        <label>Country</label>
+      </div>
+
+      <!-- Present Address -->
+      <div class="form-group">
+        <textarea placeholder=" " required></textarea>
+        <label>Present Address</label>
+      </div>
+
+      <!-- Permanent Address -->
+      <div class="form-group">
+        <textarea placeholder=" " required></textarea>
+        <label>Permanent Address</label>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <input type="email" placeholder=" " required>
+        <label>Email</label>
+      </div>
+
+      <!-- Password + Confirm Password -->
+      <div class="row">
+        <div class="form-group">
+          <input type="password" placeholder=" " required>
+          <label>Password</label>
+        </div>
+
+        <div class="form-group">
+          <input type="password" placeholder=" " required>
+          <label>Confirm Password</label>
+        </div>
+      </div>
+
+      <button class="btn" type="submit">Sign Up</button>
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a href="/login/">Login</a>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

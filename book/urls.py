@@ -1,5 +1,7 @@
 from django.contrib import admin
 from  django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 #from . views import home
 #from book.views import home,store_book,show_books,edit_books,delete_book
 from . import views
@@ -22,4 +24,6 @@ urlpatterns = [
     # path('delete_book/<int:id>',views.delete_book, name='delete_book')
     path('delete_book/<int:pk>',views.DeleteBookView.as_view(), name='delete_book'),
     path('news&events/',views.News_Events.as_view(), name='newsEvent'),
-]
+    path('register/',views.registration, name='sign_up'),
+    path('contact/',views.contact, name='contact'),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

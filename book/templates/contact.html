@@ -1,0 +1,94 @@
+{% extends "index.html" %}
+{% block content %}
+
+<style>
+  /* Gradient Title */
+  .insta-title {
+    background: linear-gradient(45deg, #ff0050, #ff7a00, #ffde00, #00eaff, #8a2be2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* Card Styling */
+  .contact-card {
+    border-radius: 20px;
+    border: none;
+    padding: 30px;
+    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.8);
+    animation: fadeIn 0.7s ease-in-out;
+  }
+
+  /* Input Animation */
+  .form-control:focus {
+    border-color: #ff0050;
+    box-shadow: 0 0 10px rgba(255, 0, 80, 0.4);
+  }
+
+  /* Fade animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Page Background */
+  .contact-bg {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1500&q=80")
+                center/cover no-repeat fixed;
+    padding: 80px 0;
+  }
+</style>
+
+<div class="contact-bg">
+  <div class="container">
+    <div class="contact-card shadow-lg mx-auto" style="max-width: 600px;">
+
+      <h2 class="text-center insta-title mb-4">Contact Us</h2>
+
+      <p class="text-center text-secondary mb-4">
+        We’d love to hear from you! Send us your message.
+      </p>
+
+      <form method="post" action="">
+        {% csrf_token %}
+
+        <!-- Name Field -->
+        <div class="mb-3">
+          <label for="id_name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="id_name" name="name" placeholder="Your Name" required>
+        </div>
+
+        <!-- Phone Field -->
+        <div class="mb-3">
+          <label for="id_phone" class="form-label">Phone</label>
+          <input type="text" class="form-control" id="id_phone" name="phone" placeholder="Your Phone Number" required>
+        </div>
+
+        <!-- Email Field -->
+        <div class="mb-3">
+          <label for="id_email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="id_email" name="email" placeholder="Your Email" required>
+        </div>
+
+        <!-- Message Field -->
+        <div class="mb-3">
+          <label for="id_message" class="form-label">Message</label>
+          <textarea class="form-control" id="id_message" name="message" rows="5" placeholder="Your Message" required></textarea>
+        </div>
+
+        <div class="d-grid mt-3">
+          <button type="submit" class="btn btn-lg text-white"
+            style="background: linear-gradient(45deg,#ff0050,#8a2be2); border-radius: 12px; border: none;">
+            Send Message
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OKGS | Instagram-Style Library</title>
+<title>OKGS | Dynamic Library</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 <style>
@@ -79,17 +79,11 @@ footer {background: linear-gradient(90deg, #b909ee, #f093fb); padding:20px; text
     <div class="collapse navbar-collapse" id="navbarMenu">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="{% url 'homepage' %}">HOME</a></li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="booksDropdown" role="button" data-bs-toggle="dropdown">BOOKS & MEDIA</a>
-          <ul class="dropdown-menu" aria-labelledby="booksDropdown">
-            <li><a class="dropdown-item" href="{% url 'store_book' %}">Add Book</a></li>
-            <li><a class="dropdown-item" href="{% url 'show_books' %}">Show Books</a></li>
-          </ul>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="#">NEWS & EVENTS</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">CONTACT</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'show_books' %}">READ BOOK</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'newsEvent' %}">NEWS & EVENTS</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">CONTACT</a></li>
         <li class="nav-item"><a class="btn-register" href="{% url 'login_interface' %}"> Login </a></li>
-        <li class="nav-item"><a class="btn-register" href="">Register</a></li>
+        <li class="nav-item"><a class="btn-register" href="{% url 'sign_up' %}">Register</a></li>
       </ul>
     </div>
   </div>
@@ -99,7 +93,7 @@ footer {background: linear-gradient(90deg, #b909ee, #f093fb); padding:20px; text
 {% endblock %}
 <footer>
   <div class="container">
-    <p>© 2025 OKGS-Dynamic Library — Instagram-style UI with colorful animations</p>
+    <p>© 2025 OKGS-Dynamic Library — Developed by Engr.Hafezur Rahman</p>
   </div>
 </footer>
 
