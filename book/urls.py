@@ -6,15 +6,17 @@ from django.conf.urls.static import static
 #from book.views import home,store_book,show_books,edit_books,delete_book
 from . import views
 urlpatterns = [
+    path('',views.homepage_view1,name="homepage"),
     #path('',views.home), # function base view
-    path('',views.my_template_view.as_view(),name='homepage'), # class base viewS
-    path('login_interface/',views.login_interface_view.as_view(),name='login_interface'), # class base viewS
+    #path('',views.my_template_view.as_view(),name='homepage'), # class base viewS
+    path('dashboard/',views.dashboard_function,name='dashboard'), # class base viewS
+    path('login_interface/',views.Combinelogin_interface,name='login_interface'), # class base viewS
     path('user_interface/', views.userInterfaceView.as_view(), name='get_user_interface'),
     #path('store_new_book/',views.store_book, name='store_book'),
-    path('store_new_book/',views.BookFormView.as_view(), name='store_book'),
+    path('store_new_book/',views.book_form_view, name='store_book'),
     
     #path('show_books/',views.show_books,name='show_books'),
-    path('show_books/',views.BookListByClassBased.as_view(),name='show_books'),
+    path('show_books/',views.show_books,name='show_books'),
     
     path('book_details/<int:id>',views.BookDetailView.as_view(),name='book_details'),
     
@@ -22,8 +24,12 @@ urlpatterns = [
     path('edit_book/<int:pk>',views.BookUpdateView.as_view(),name='edit_book'),
     
     # path('delete_book/<int:id>',views.delete_book, name='delete_book')
-    path('delete_book/<int:pk>',views.DeleteBookView.as_view(), name='delete_book'),
-    path('news&events/',views.News_Events.as_view(), name='newsEvent'),
-    path('register/',views.registration, name='sign_up'),
+    path('delete_book/<int:pk>',views.delete_book, name='delete_book'),
+    path('news&events/',views.News_Events, name='newsEvent'),
+    path('register/',views.user_register, name='sign_up'),
     path('contact/',views.contact, name='contact'),
+    path('login/', views.user_login, name='user_login'),
+    path("logout/", views.user_logout, name="logout"),
+
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

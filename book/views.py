@@ -1,120 +1,108 @@
 from django.shortcuts import render,redirect
 from book.forms import BookStoreForm
 from book.models import BookStoreModel
-# Create your views here.
 
-#function base view
-# def home(request):
-#     return render(request,'base.html')
+
 
 #class base view
-from django.views.generic import TemplateView
-class my_template_view(TemplateView):
-    template_name='part_of_index.html'
+from .models import UserRegistration
 
-class login_interface_view(TemplateView):
-    template_name='login_interface.html'
+def homepage_view1(request):
+    user_id = request.session.get("user_id")
+
+    if user_id:
+        try:
+            user = UserRegistration.objects.get(id=user_id)
+            user1 = user.first_name
+        except UserRegistration.DoesNotExist:
+            user1 = None
+    else:
+        user1 = None
+
+    context = {
+        'user1': user1,
+    }
+    return render(request, 'part_of_index.html', context)
+
+
+
+"""from django.views.generic import TemplateView
+class my_template_view(TemplateView):
+    template_name='part_of_index.html'  """
+from django.views.generic import TemplateView
+def Combinelogin_interface(request):
+    return render(request, 'login_interface.html')
     
 
 class userInterfaceView(TemplateView):
      template_name ='user_interface.html'
-# ----------------------**********a simple divider **********--------------------------------------
-# def store_book(request):
-#     if request.method =='POST':
-#         book= BookStoreForm(request.POST)
-#         if book.is_valid():
-#             book.save()
-#             print(book.cleaned_data)
-#             return redirect('show_books')
-#     else:
-#         book=BookStoreForm()
-#     return render(request,'store_book.html',{'form':book })
 
-#class based view 
-#from view
-# from django.views.generic.edit import FormView 
-# #from django.urls import reverse_lazy # complex url k simple kore.
-# #from django.http import HttpResponse
-# class BookFormView(FormView):
-#     template_name='store_book.html'
-#     form_class=BookStoreForm
-#     #success_url='/show_books/'
-#     #success_url=reverse_lazy('show_books') # every complex url have to simple by using  this function.
-#     def form_valid(self,form):
-#         print(form.cleaned_data) # for printing data in terminal or backend.
-#         form.save()
-#         #return HttpResponse('Form has submitted') # its give a response in web page like showbooks.html
-#         return redirect('show_books')
 
-#class based view 
-#CreateView
 
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy # complex url k simple kore.
 
-class BookFormView(CreateView):
-    model=BookStoreModel
-    template_name='store_book.html'
-    form_class=BookStoreForm
-    #success_url='/show_books/'
-    success_url=reverse_lazy('show_books') # every complex url have to simple by using  this function.
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from .models import BookStoreModel
+from .forms import BookStoreForm
 
-# ----------------------**********a simple divider **********--------------------------------------
 
-#function based view:
-from book.models import BookStoreModel
-# def show_books(request):
-#     book=BookStoreModel.objects.all()
-#     print(book)
-#     return render(request, 'show_book.html',{'data':book})
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from .models import UserRegistration
+from .forms import BookStoreForm
 
-#class based view:
-#list view
-from django.views.generic import ListView
-class BookListByClassBased(ListView):
-    model=BookStoreModel  # model =built-in variable
-    template_name='show_book.html' # template_name =built-in variable
-    context_object_name='data' # context_object_name =built-in variable
-    # ordering='author' # this is make order according to author name.
-    #ordering='category' # this is make order according to category.
-    #ordering='id' # this is make order according to ascending order.
-    #ordering='-id' # this is make order according to dissending order.
+def book_form_view(request):
+    # 🔐 login check
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return redirect("user_login")
+
+    try:
+        user = UserRegistration.objects.get(id=user_id)
+        user1 = user.first_name
+    except UserRegistration.DoesNotExist:
+        return redirect("user_login")
+
+    if request.method == "POST":
+        form = BookStoreForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse_lazy('show_books'))
+    else:
+        form = BookStoreForm()
+
+    context = {
+        'form': form,
+        'user1': user1,
+    }
+    return render(request, 'store_book.html', context)
+
+
+from book.models import BookStoreModel, UserRegistration
+
+def show_books(request):
+    all_books = BookStoreModel.objects.all()
+
+    user_id = request.session.get("user_id")
+
+    if user_id:
+        try:
+            user = UserRegistration.objects.get(id=user_id)
+            user1 = user.first_name
+        except UserRegistration.DoesNotExist:
+            user1 = None
+    else:
+        user1 = None
+
+    context = {
+        'all_book': all_books,
+        'user1': user1,
+    }
+    return render(request, 'show_book.html', context)
+
     
-    # def get_queryset(self): # function name can't be change.
-    #     #return BookStoreModel.objects.filter(author='dr hafiz')
-    #     return BookStoreModel.objects.filter(id='2')
-    
-    # def get_context_data(self,**kwargs):
-    #     sort_by_author=super().get_context_data(**kwargs)
-    #     sort_by_author={'data': BookStoreModel.objects.all().order_by('author')}
-    #     return sort_by_author
-    
-    # # how to over ride template in List View:
-    # def get_template_names(self):
-    #     if self.request.user.is_superuser:
-    #         template_name='superuser.html' # this html have to create.
-    #     elif self.request.user.is_staff:
-    #         template_name='stuff.html' # this html have to create
-    #     else:
-    #         template_name=self.template_name
-            
-    #     return [template_name]
-
-# ----------------------********** a simple divider **********--------------------------------------
-## function based view:
-# def edit_books(request,id):
-#     book=BookStoreModel.objects.get(pk=id)
-#     form=BookStoreForm(instance=book)
-#     if request.method == 'POST':
-#         form=BookStoreForm(request.POST,instance=book)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('show_books')
-#     return render(request,'store_book.html',{'form':form })
-
-
-## class based view:
-# UpdateView
 from django.views.generic.edit import UpdateView
 class BookUpdateView(UpdateView):
     model=BookStoreModel
@@ -123,19 +111,33 @@ class BookUpdateView(UpdateView):
     success_url=reverse_lazy('show_books')
     
     
-# ----------------------********** a simple divider **********--------------------------------------    
-#function based view:
-# def delete_book(request,id):
-#     book=BookStoreModel.objects.get(pk=id).delete()
-#     return redirect('show_books')
 
-##class based view:
-##delete view:
-from django.views.generic.edit import DeleteView
-class DeleteBookView(DeleteView):
-    model=BookStoreModel
-    template_name='delete_conf.html'
-    success_url=reverse_lazy('show_books')
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
+from .models import BookStoreModel, UserRegistration
+
+def delete_book(request, pk):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return redirect("user_login")
+
+    try:
+        user = UserRegistration.objects.get(id=user_id)
+        user1 = user.first_name
+    except UserRegistration.DoesNotExist:
+        return redirect("user_login")
+
+    book = get_object_or_404(BookStoreModel, pk=pk)
+
+    if request.method == "POST":
+        book.delete()
+        return redirect(reverse_lazy("show_books"))
+
+    context = {
+        'book': book,
+        'user1': user1,
+    }
+    return render(request, "delete_conf.html", context)
 
     
 
@@ -155,16 +157,192 @@ class BookDetailView(DetailView):
     context_object_name='item'
     pk_url_kwarg='id'
 
-class News_Events(TemplateView):
-    template_name='news&event.html'
+def News_Events(request):
+    user_id = request.session.get("user_id")
 
-def registration(request):
-    return render(request, 'registration.html')
+    if user_id:
+        try:
+            user = UserRegistration.objects.get(id=user_id)
+            user1 = user.first_name
+        except UserRegistration.DoesNotExist:
+            user1 = None
+    else:
+        user1 = None
+
+    context = {
+        'user1': user1
+    }
+    return render(request, 'news&event.html', context)
+ 
+
+
+from django.shortcuts import render, redirect
+from .forms import RegistrationForm
+
+def user_register(request):
+    if request.method == "POST":
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+
+            # Normally you should hash password
+            user = form.save(commit=False)
+            user.password = form.cleaned_data['password']
+            user.save()
+
+            return redirect("login_interface")   # redirect after success
+    else:
+        form = RegistrationForm()
+
+    return render(request, "registration.html", {"form": form})
+
+
+
 
 def contact(request):
-    return render(request, 'contact.html')
+    user_id = request.session.get("user_id")
+
+    if user_id:
+        try:
+            user = UserRegistration.objects.get(id=user_id)
+            user1 = user.first_name
+        except UserRegistration.DoesNotExist:
+            user1 = None
+    else:
+        user1 = None
+
+    context = {
+        'user1': user1
+    }
+    return render(request, 'contact.html', context)
+
+
+"""
+def contact(request):
+    authenticate_user=UserRegistration.objects.all().first()
+    if authenticate_user ==None:
+        user1=None
+    else:
+        user1=authenticate_user.is_active
+    context={
+        'user1':user1,
+    }
+    return render(request, 'contact.html',context)
+
+"""
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import UserRegistration
+
+def user_login(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        try:
+            user = UserRegistration.objects.get(email=email)
+
+            if user.password == password:
+                # Save session
+                request.session["user_id"] = user.id
+                request.session["user_email"] = user.email
+
+                # Correct way to update user field
+                user.is_active = True
+                user.save()
+
+                messages.success(request, "Login successful!")
+                return redirect("dashboard")
+
+            else:
+                messages.error(request, "Incorrect password!")
+
+        except UserRegistration.DoesNotExist:
+            messages.error(request, "No account found with this email!")
+
+    return render(request, "user_interface.html")
+
+
+from .models import UserRegistration
+def dashboard_function(request):
+     authenticate_user=UserRegistration.objects.all().first()
+     if authenticate_user.is_active == False:
+        user1=None
+     else:
+        varified_user=authenticate_user
+        user1=authenticate_user.first_name
+        profile_picture=authenticate_user.profile_picture
+        email=authenticate_user.email
+        city=authenticate_user.city
+        region=authenticate_user.region
+        country=authenticate_user.country
+     context={
+         'user1':user1,
+         'profile_picture':profile_picture,
+         'email':email,
+         'city':city,
+         'region':region,
+         'country':country,
+         'varified_user':varified_user,
+     }
+     return render(request,'dashboard.html',context)
+
     
 
+
+from django.shortcuts import render,redirect
+
+from book.models import UserRegistration
+def homepage_view(request):
+    authenticate_user=UserRegistration.objects.all().first()
+    if authenticate_user ==None:
+        user1=None
+    else:
+        user1=authenticate_user.first_name
+    context={
+        'user1': user1,
+    }
+    return render(request,'part_of_index.html',context)
+
+from django.contrib import auth, messages
+from django.contrib.auth.decorators import login_required
+from .models import UserRegistration
+
+from django.contrib.auth import logout
+
+from django.contrib.auth import logout
+from django.contrib import messages
+from .models import UserRegistration
+
+def user_logout(request):
+    user_id = request.session.get("user_id")
+
+    if user_id:
+        try:
+            user = UserRegistration.objects.get(id=user_id)
+            user.is_active = False
+            user.save()
+        except UserRegistration.DoesNotExist:
+            pass
+
+    request.session.flush()
+    messages.success(request, "You are logged out.")
+    return redirect("user_login")
+
+
+
+"""
+from django.shortcuts import redirect
+from django.contrib import messages
+
+def user_logout(request):
+    # Clear all session data
+    request.session.flush()
+
+    messages.success(request, "You have been logged out successfully!")
+    return redirect("user_login")   # redirect to your login page
+
+"""
 
 
 

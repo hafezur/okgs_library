@@ -61,14 +61,15 @@
     <h2 class="text-center insta-title mb-2">OKGS Dynamic Library</h2>
     <div class="divider"></div>
 
-    <form method="post" action="{% url 'show_books' %}">
-      {% csrf_token %}
-      {{ form|crispy }}
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
 
-      <div class="d-grid mt-4">
+    <div class="d-grid mt-4">
         <button type="submit" class="insta-btn">Submit</button>
-      </div>
+    </div>
     </form>
+
   </div>
 </div>
 

@@ -2,98 +2,120 @@
 {% block content %}
 
 <style>
-  /* Instagram Style */
+  /* Instagram Soft Gradient Background */
   body {
     background: linear-gradient(135deg, #fdfbfb, #ebedee);
     font-family: 'Poppins', sans-serif;
   }
 
+  /* Card */
   .insta-card {
     background: #fff;
     border-radius: 30px;
-    padding: 25px;
+    padding: 28px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    transition: 0.3s;
+    transition: 0.3s ease;
   }
-
   .insta-card:hover {
-    box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+    box-shadow: 0 20px 38px rgba(0,0,0,0.15);
   }
 
+  /* Image */
   .insta-img {
-    border-radius: 20px;
+    border-radius: 22px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: .3s;
+  }
+  .insta-img:hover {
+    transform: scale(1.03);
   }
 
+  /* Title */
   .insta-title {
     font-weight: 700;
     color: #111;
     font-size: 28px;
+    letter-spacing: 0.3px;
   }
 
+  /* Labels */
   .insta-label {
     font-weight: 600;
     color: #777;
   }
 
+  /* Buttons */
   .insta-btn {
     border-radius: 40px;
     font-weight: 600;
     padding: 10px 25px;
-    transition: 0.2s;
+    transition: 0.25s;
+    font-size: 16px;
   }
 
   .insta-btn:hover {
-    transform: scale(1.05);
+    transform: scale(1.07);
   }
 
   .btn-edit {
     background: #ffd369;
     border: none;
+    color: #000;
   }
 
   .btn-delete {
     background: #ff6b6b;
-    color: white;
     border: none;
+    color: #fff;
   }
 
   .btn-back {
-    border: 2px solid #ccc;
-    background: white;
+    border: 2px solid #ddd;
+    background: #fff;
+    color: #333;
   }
 
+  /* Divider */
   .divider {
     width: 80px;
     height: 4px;
-    border-radius: 5px;
+    border-radius: 6px;
     background: #ff6b6b;
     margin: 15px auto;
   }
 </style>
 
+
 <div class="container py-5">
 
-  <!-- Title -->
+  <!-- Page Title -->
   <div class="text-center mb-5">
-    <h1 class="fw-bold insta-title">📚 Book Information</h1>
-    <p class="text-muted">View and manage details of this book</p>
+    <h1 class="insta-title">📚 Book Information</h1>
+    <p class="text-muted">View and manage all details of this book</p>
     <div class="divider"></div>
   </div>
 
-  <!-- Card -->
-  <div class="insta-card mx-auto" style="max-width: 880px;">
+  <!-- Instagram Card -->
+  <div class="insta-card mx-auto" style="max-width: 900px;">
+
     <div class="row g-4">
 
-      <!-- Image -->
+      <!-- Book Image -->
       <div class="col-md-4 text-center">
-        <img src="https://cdn-icons-png.flaticon.com/512/29/29302.png"
-             alt="Book cover"
-             class="img-fluid insta-img"
-             style="max-height: 230px;">
+        {% if item.book_image %}
+          <img src="{{ item.book_image.url }}"
+               alt="{{ item.book_name }}"
+               class="img-fluid insta-img"
+               style="max-height: 240px;">
+        {% else %}
+          <img src="https://cdn-icons-png.flaticon.com/512/29/29302.png"
+               alt="Book cover"
+               class="img-fluid insta-img"
+               style="max-height: 240px;">
+        {% endif %}
       </div>
 
-      <!-- Details -->
+      <!-- Book Details -->
       <div class="col-md-8">
         <h2 class="insta-title mb-3">{{ item.book_name }}</h2>
 
@@ -107,8 +129,9 @@
 
     <hr class="my-4">
 
-    <!-- Buttons -->
+    <!-- Action Buttons -->
     <div class="d-flex justify-content-center gap-3 mt-3">
+
       <a href="{% url 'edit_book' pk=item.id %}"
          class="btn insta-btn btn-edit shadow-sm">
         ✏️ Edit
@@ -124,8 +147,8 @@
          class="btn insta-btn btn-back shadow-sm">
         ← Back
       </a>
-    </div>
 
+    </div>
   </div>
 </div>
 

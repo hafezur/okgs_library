@@ -72,23 +72,55 @@ footer {background: linear-gradient(90deg, #b909ee, #f093fb); padding:20px; text
 
 <nav class="navbar navbar-expand-lg">
   <div class="container">
-    <a class="navbar-brand" href="#">OKGS-Dynamic Library</a>
+    <a class="navbar-brand" href="#">OKGS Dynamic Library</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
       <span class="navbar-toggler-icon" style="color:#fff;"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarMenu">
       <ul class="navbar-nav ms-auto">
+
         <li class="nav-item"><a class="nav-link" href="{% url 'homepage' %}">HOME</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'store_book' %}">ADD BOOK</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'show_books' %}">READ BOOK</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'newsEvent' %}">NEWS & EVENTS</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">CONTACT</a></li>
-        <li class="nav-item"><a class="btn-register" href="{% url 'login_interface' %}"> Login </a></li>
-        <li class="nav-item"><a class="btn-register" href="{% url 'sign_up' %}">Register</a></li>
+
+        {% if user1 == None %}
+            <!-- Logged-in User Menu -->
+             <!-- Only for NOT logged-in users -->
+            <li class="nav-item">
+                <a class="btn-register" href="{% url 'login_interface' %}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn-register" href="{% url 'sign_up' %}">Register</a>
+            </li>
+        {% elif user1 == False %}
+            <!-- Logged-in User Menu -->
+             <!-- Only for NOT logged-in users -->
+            <li class="nav-item">
+                <a class="btn-register" href="{% url 'login_interface' %}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn-register" href="{% url 'sign_up' %}">Register</a>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="btn-register" href="#"> {{ user1 }} </a>
+            </li>
+            <li class="nav-item">
+                <a class="btn-register" href="{% url 'logout' %}"> Logout </a>
+            </li>
+        {% endif %}
+
       </ul>
     </div>
   </div>
 </nav>
+
 {% block content %}
+
+
 
 {% endblock %}
 <footer>

@@ -1,0 +1,192 @@
+{% extends "index.html" %}
+{% block content %}
+
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .dash-bg {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #31039b, #5add03);
+    padding: 80px 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .dashboard-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    animation: fadeIn 1s ease;
+  }
+
+  /* Welcome Box */
+  .welcome-box {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 35px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+    margin-bottom: 35px;
+    color: white;
+  }
+
+  .welcome-box h1 {
+    font-size: 32px;
+    font-weight: 700;
+  }
+
+  .admin-badge {
+    display: inline-block;
+    background: #ffdd00;
+    color: black;
+    font-weight: 600;
+    padding: 5px 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    margin-left: 10px;
+  }
+
+  /* Profile Card */
+  .profile-card {
+    background: rgba(255, 255, 255, 0.18);
+    padding: 25px;
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    color: white;
+    margin-bottom: 35px;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+  }
+
+  .profile-image {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 4px solid rgba(255,255,255,0.7);
+    object-fit: cover;
+  }
+
+  .profile-info p {
+    font-size: 15px;
+    margin: 5px 0;
+  }
+
+  /* Stats Cards */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.18);
+    padding: 25px;
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    color: white;
+    text-align: center;
+    transition: 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+  }
+
+  .card h2 {
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  /* Logout Button */
+  .logout-btn {
+    display: inline-block;
+    padding: 14px 32px;
+    background: #ff415e;
+    color: white;
+    border-radius: 35px;
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 45px;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+
+  .logout-btn:hover {
+    background: #ff1e3c;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<div class="dash-bg">
+
+  <div class="dashboard-wrapper">
+
+    <!-- Welcome User -->
+    <div class="welcome-box">
+      <h1>
+        Welcome, {{ varified_user.first_name }} {{ varified_user.last_name }} 👋
+        {% if varified_user.is_staff %}
+          <span class="admin-badge">Admin</span>
+        {% endif %}
+      </h1>
+      <p>Your dashboard overview & account information.</p>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="profile-card">
+      {% if varified_user.profile_picture %}
+        <img src="{{ varified_user.profile_picture.url }}" class="profile-image">
+      {% else %}
+        <img src="/static/default_user.png" class="profile-image">
+      {% endif %}
+
+      <div class="profile-info">
+        <p><strong>Email:</strong> {{ varified_user.email }}</p>
+        <p><strong>City:</strong> {{ varified_user.city }}</p>
+        <p><strong>Region:</strong> {{ varified_user.region }}</p>
+        <p><strong>Country:</strong> {{ varified_user.country }}</p>
+        <p><strong>Present Address:</strong> {{ varified_user.present_address }}</p>
+        <p><strong>Permanent Address:</strong> {{ varified_user.permanent_address }}</p>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+
+      <div class="card">
+        <h2>📚</h2>
+        <p>Total Books Read</p>
+      </div>
+
+      <div class="card">
+        <h2>⭐</h2>
+        <p>Your Rating Progress</p>
+      </div>
+
+      <div class="card">
+        <h2>👤</h2>
+        <p>Profile Views</p>
+      </div>
+
+    </div>
+
+    <!-- Logout -->
+    <a href="/logout/" class="logout-btn">Logout</a>
+
+  </div>
+
+</div>
+
+{% endblock %}
