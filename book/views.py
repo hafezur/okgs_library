@@ -263,29 +263,37 @@ def user_login(request):
     return render(request, "user_interface.html")
 
 
+from django.shortcuts import render
 from .models import UserRegistration
+
 def dashboard_function(request):
-     authenticate_user=UserRegistration.objects.all().first()
-     if authenticate_user.is_active == False:
-        user1=None
-     else:
-        varified_user=authenticate_user
-        user1=authenticate_user.first_name
-        profile_picture=authenticate_user.profile_picture
-        email=authenticate_user.email
-        city=authenticate_user.city
-        region=authenticate_user.region
-        country=authenticate_user.country
-     context={
-         'user1':user1,
-         'profile_picture':profile_picture,
-         'email':email,
-         'city':city,
-         'region':region,
-         'country':country,
-         'varified_user':varified_user,
-     }
-     return render(request,'dashboard.html',context)
+    user_id = request.session.get("user_id")  # get logged-in user
+    user1 = profile_picture = email = city = region = country = varified_user = None
+
+    if user_id:
+        try:
+            authenticate_user = UserRegistration.objects.get(id=user_id)
+            if authenticate_user.is_active:
+                varified_user = authenticate_user
+                user1 = authenticate_user.first_name
+                profile_picture = authenticate_user.profile_picture
+                email = authenticate_user.email
+                city = authenticate_user.city
+                region = authenticate_user.region
+                country = authenticate_user.country
+        except UserRegistration.DoesNotExist:
+            pass  # user1 etc. remain None
+
+    context = {
+        'user1': user1,
+        'profile_picture': profile_picture,
+        'email': email,
+        'city': city,
+        'region': region,
+        'country': country,
+        'varified_user': varified_user,
+    }
+    return render(request, 'dashboard.html', context)
 
     
 
