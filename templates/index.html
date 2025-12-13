@@ -106,7 +106,7 @@ footer {background: linear-gradient(90deg, #b909ee, #f093fb); padding:20px; text
             </li>
         {% else %}
             <li class="nav-item">
-                <a class="btn-register" href="#"> {{ user1 }} </a>
+                <a class="btn-register" href="{% url 'dashboard' %}"> {{ user1 }} </a>
             </li>
             <li class="nav-item">
                 <a class="btn-register" href="{% url 'logout' %}"> Logout </a>

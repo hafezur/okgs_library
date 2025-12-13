@@ -30,6 +30,7 @@ urlpatterns = [
     path('contact/',views.contact, name='contact'),
     path('login/', views.user_login, name='user_login'),
     path("logout/", views.user_logout, name="logout"),
+    path('update-profile-picture/', views.update_profile_picture, name='update_profile_picture'),
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

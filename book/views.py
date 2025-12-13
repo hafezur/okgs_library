@@ -4,7 +4,7 @@ from book.models import BookStoreModel
 
 
 
-#class base view
+#function base view
 from .models import UserRegistration
 
 def homepage_view1(request):
@@ -54,7 +54,7 @@ from .models import UserRegistration
 from .forms import BookStoreForm
 
 def book_form_view(request):
-    # 🔐 login check
+    #login check
     user_id = request.session.get("user_id")
     if not user_id:
         return redirect("user_login")
@@ -351,6 +351,24 @@ def user_logout(request):
     return redirect("user_login")   # redirect to your login page
 
 """
+
+from django.shortcuts import redirect
+from django.contrib import messages
+from .models import UserRegistration
+
+def update_profile_picture(request):
+    user_id = request.session.get("user_id")
+    if user_id and request.method == "POST":
+        try:
+            user = UserRegistration.objects.get(id=user_id)
+            if 'profile_picture' in request.FILES:
+                user.profile_picture = request.FILES['profile_picture']
+                user.save()
+                messages.success(request, "Profile picture updated successfully!")
+        except UserRegistration.DoesNotExist:
+            messages.error(request, "User not found.")
+    return redirect('dashboard')
+
 
 
 
