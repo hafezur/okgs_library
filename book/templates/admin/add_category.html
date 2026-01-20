@@ -1,0 +1,171 @@
+{% extends "index.html" %}
+{% block content %}
+
+<style>
+body{
+  font-family:'Poppins',sans-serif;
+  background:#fafafa;
+}
+
+/* Wrapper */
+.add-category-wrapper{
+  max-width:700px;
+  margin:70px auto;
+  padding:20px;
+}
+
+/* Card */
+.add-category-card{
+  background:rgba(255,255,255,0.9);
+  border-radius:25px;
+  box-shadow:0 15px 35px rgba(0,0,0,.25);
+  padding:35px;
+  animation:fadeIn .8s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* Title */
+.add-category-title{
+  font-size:32px;
+  font-weight:700;
+  text-align:center;
+  background:linear-gradient(45deg,#f09433,#dc2743,#bc1888);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin-bottom:30px;
+}
+
+/* Inputs */
+.form-group{
+  margin-bottom:22px;
+}
+
+.form-group label{
+  font-weight:600;
+  display:block;
+  margin-bottom:8px;
+}
+
+.form-group input,
+.form-group textarea{
+  width:100%;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid #ddd;
+  font-size:15px;
+  outline:none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus{
+  border-color:#dc2743;
+}
+
+/* File Upload */
+.image-preview{
+  width:100%;
+  height:220px;
+  border-radius:18px;
+  border:2px dashed #ccc;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#aaa;
+  margin-bottom:12px;
+  overflow:hidden;
+}
+
+.image-preview img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* Checkbox */
+.checkbox-group{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:10px;
+}
+
+/* Button */
+.submit-btn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(45deg,#f09433,#dc2743,#bc1888);
+  color:white;
+  font-size:17px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.submit-btn:hover{
+  transform:scale(1.05);
+}
+</style>
+
+<div class="add-category-wrapper">
+
+<div class="add-category-card">
+
+<h2 class="add-category-title">Add New Category</h2>
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+
+<div class="form-group">
+<label>Category Name</label>
+<input type="text" name="name" placeholder="Enter category name" required>
+</div>
+
+<div class="form-group">
+<label>Description</label>
+<textarea name="description" rows="4" placeholder="Category description"></textarea>
+</div>
+
+<div class="form-group">
+<label>Category Image</label>
+<div class="image-preview" id="previewBox">Upload Image</div>
+<input type="file" name="category_image" id="imageInput" accept="image/*">
+</div>
+
+<div class="checkbox-group">
+<input type="checkbox" name="is_active" checked>
+<label>Active Category</label>
+</div>
+
+<br>
+
+<button class="submit-btn">Save Category</button>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+const input = document.getElementById("imageInput");
+const preview = document.getElementById("previewBox");
+
+input.addEventListener("change", function(){
+  const file = this.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = function(){
+      preview.innerHTML = `<img src="${reader.result}">`;
+    }
+    reader.readAsDataURL(file);
+  }
+});
+</script>
+
+{% endblock %}

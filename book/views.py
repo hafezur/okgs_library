@@ -103,12 +103,43 @@ def show_books(request):
     return render(request, 'show_book.html', context)
 
     
-from django.views.generic.edit import UpdateView
-class BookUpdateView(UpdateView):
-    model=BookStoreModel
-    template_name='store_book.html'
-    form_class=BookStoreForm
-    success_url=reverse_lazy('show_books')
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
+from .models import BookStoreModel
+from .forms import BookStoreForm
+
+def update_book(request, id):
+    book = get_object_or_404(BookStoreModel, id=id)
+
+    user_id = request.session.get("user_id")
+    is_adm = None
+
+    if user_id:
+        try:
+            user = UserRegistration.objects.get(id=user_id)
+            is_adm = user.is_admin
+        except UserRegistration.DoesNotExist:
+            pass
+
+    # --- FORM LOGIC (always define form) ---
+    if request.method == "POST":
+        form = BookStoreForm(request.POST, request.FILES, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('show_books')
+    else:
+        is_adm=is_adm
+        form = BookStoreForm(instance=book)
+
+        context = {
+            'is_adm': is_adm,
+            'form': form,
+            'book': book
+        }
+
+        return render(request, 'store_book.html', context)
+
+
     
     
 
@@ -145,17 +176,43 @@ def delete_book(request, pk):
     
 
 
-# ----------------------********** a simple divider **********--------------------------------------
+# ----------------------**********      a simple divider     **********-----------------------------
 
 
-#class based view:
-# detail view:
-from django.views.generic import DetailView
-class BookDetailView(DetailView):
-    model=BookStoreModel
-    template_name='book_detail.html'
-    context_object_name='item'
-    pk_url_kwarg='id'
+
+def book_detail_view(request, id):
+    item = get_object_or_404(BookStoreModel, id=id)
+
+    user = None
+    user1 = None
+
+    user_id = request.session.get("user_id")
+    if user_id:
+        user = UserRegistration.objects.get(id=user_id)
+        if user:
+            user1 = user.first_name
+            is_adm=user.is_admin
+
+    context = {
+        'user1': user1,
+        'custom_user': user,   # rename for avoid conflict
+        'item': item,
+        'is_adm': is_adm,
+    }
+
+    return render(request, 'book_detail.html', context)
+
+
+def show_stock(request):
+    all_stock=BookStoreModel.objects.all()
+    
+    context={
+        'all_book':all_stock,
+    }
+    return render(request,'admin/stock.html',context)
+
+
+
 
 def News_Events(request):
     user_id = request.session.get("user_id")
@@ -269,8 +326,10 @@ from .models import UserRegistration
 def dashboard_function(request):
     user_id = request.session.get("user_id")  # get logged-in user
     user1 = profile_picture = email = city = region = country = varified_user = None
+    all_book=BookStoreModel.objects.all()
 
     if user_id:
+        all_category=Category.objects.all()
         try:
             authenticate_user = UserRegistration.objects.get(id=user_id)
             if authenticate_user.is_active:
@@ -281,9 +340,10 @@ def dashboard_function(request):
                 city = authenticate_user.city
                 region = authenticate_user.region
                 country = authenticate_user.country
+                is_adm=authenticate_user.is_admin
         except UserRegistration.DoesNotExist:
             pass  # user1 etc. remain None
-
+    
     context = {
         'user1': user1,
         'profile_picture': profile_picture,
@@ -292,6 +352,9 @@ def dashboard_function(request):
         'region': region,
         'country': country,
         'varified_user': varified_user,
+        'is_adm': is_adm,
+        'all_book': all_book,
+        'all_category': all_category,
     }
     return render(request, 'dashboard.html', context)
 
@@ -371,4 +434,71 @@ def update_profile_picture(request):
 
 
 
+def read_book(request, book_id):
+    book = get_object_or_404(BookStoreModel, id=book_id)
+    admin=UserRegistration.objects.get(is_admin=True)
+    return render(request, 'read_book.html', {'book': book,'admin':admin})
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Category
+
+def add_category(request):
+    user_id = request.session.get("user_id")
+    varified_user = UserRegistration.objects.get(id=user_id)
+    user1=varified_user.first_name
+    is_adm=varified_user.is_admin
+    if request.method == "POST":
+        name = request.POST.get("name")
+        description = request.POST.get("description")
+        is_active = request.POST.get("is_active")
+
+        category_image = request.FILES.get("category_image")
+
+        # Checkbox handling
+        if is_active:
+            is_active = True
+        else:
+            is_active = False
+
+        # Create Category
+        Category.objects.create(
+            name=name,
+            description=description,
+            category_image=category_image,
+            is_active=is_active
+        )
+
+        messages.success(request, "Category added successfully!")
+        return redirect("add_category")
+    context={
+        'user1':user1,
+        'is_adm':is_adm,
+    }
+    return render(request, "admin/add_category.html",context)
+
+
+def show_category(request):
+    user_id = request.session.get("user_id")
+    varified_user = UserRegistration.objects.get(id=user_id)
+    user1=varified_user.first_name
+    is_adm=varified_user.is_admin
+    all_category=Category.objects.all()
+    context={
+        'user1':user1,
+        'is_adm':is_adm,
+        'category':all_category,
+    }
+    return render(request, "category/category_list.html",context)
+def show_stock(request):
+    user_id = request.session.get("user_id")
+    varified_user = UserRegistration.objects.get(id=user_id)
+    user1=varified_user.first_name
+    is_adm=varified_user.is_admin
+    all_books=BookStoreModel.objects.all()
+    context={
+        'user1':user1,
+        'is_adm':is_adm,
+        'all_books':all_books,
+    }
+    return render(request, "category/stock_list.html",context)

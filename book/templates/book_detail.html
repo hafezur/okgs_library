@@ -2,25 +2,26 @@
 {% block content %}
 
 <style>
-  /* Instagram Soft Gradient Background */
   body {
     background: linear-gradient(135deg, #fdfbfb, #ebedee);
     font-family: 'Poppins', sans-serif;
   }
 
-  /* Card */
   .insta-card {
     background: #fff;
     border-radius: 30px;
     padding: 28px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
     transition: 0.3s ease;
-  }
-  .insta-card:hover {
-    box-shadow: 0 20px 38px rgba(0,0,0,0.15);
+    position: relative;
+    animation: fadeIn 0.8s ease;
   }
 
-  /* Image */
+  @keyframes fadeIn {
+    from {opacity:0; transform: translateY(20px);}
+    to {opacity:1; transform: translateY(0);}
+  }
+
   .insta-img {
     border-radius: 22px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -30,21 +31,17 @@
     transform: scale(1.03);
   }
 
-  /* Title */
   .insta-title {
     font-weight: 700;
     color: #111;
     font-size: 28px;
-    letter-spacing: 0.3px;
   }
 
-  /* Labels */
   .insta-label {
     font-weight: 600;
     color: #777;
   }
 
-  /* Buttons */
   .insta-btn {
     border-radius: 40px;
     font-weight: 600;
@@ -75,7 +72,6 @@
     color: #333;
   }
 
-  /* Divider */
   .divider {
     width: 80px;
     height: 4px;
@@ -83,39 +79,88 @@
     background: #ff6b6b;
     margin: 15px auto;
   }
-</style>
 
+  /* PRICE BADGE */
+  .price-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(45deg, #f09433, #dc2743, #bc1888);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 700;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+  }
+
+  /* LOGIN WARNING CARD */
+  .login-warning {
+    background: #fff;
+    padding: 50px;
+    border-radius: 30px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    text-align: center;
+    animation: bounceIn 1s ease;
+  }
+
+  @keyframes bounceIn {
+    0% {transform: scale(0.8); opacity:0;}
+    60% {transform: scale(1.05);}
+    100% {transform: scale(1); opacity:1;}
+  }
+
+  .login-warning h2 {
+    font-weight: 700;
+    color: #dc2743;
+  }
+
+  .login-warning p {
+    color: #666;
+    font-size: 17px;
+  }
+
+  .login-btn {
+    background: linear-gradient(45deg, #f09433, #dc2743, #bc1888);
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+
+  .login-btn:hover {
+    transform: scale(1.08);
+  }
+</style>
 
 <div class="container py-5">
 
-  <!-- Page Title -->
+{% if custom_user  %}
+
+  <!-- AUTHENTICATED USER VIEW -->
+
   <div class="text-center mb-5">
     <h1 class="insta-title">📚 Book Information</h1>
     <p class="text-muted">View and manage all details of this book</p>
     <div class="divider"></div>
   </div>
 
-  <!-- Instagram Card -->
   <div class="insta-card mx-auto" style="max-width: 900px;">
+
+    <div class="price-badge">৳ {{ item.price }}</div>
 
     <div class="row g-4">
 
-      <!-- Book Image -->
       <div class="col-md-4 text-center">
         {% if item.book_image %}
-          <img src="{{ item.book_image.url }}"
-               alt="{{ item.book_name }}"
-               class="img-fluid insta-img"
-               style="max-height: 240px;">
+          <img src="{{ item.book_image.url }}" class="img-fluid insta-img" style="max-height:240px;">
         {% else %}
-          <img src="https://cdn-icons-png.flaticon.com/512/29/29302.png"
-               alt="Book cover"
-               class="img-fluid insta-img"
-               style="max-height: 240px;">
+          <img src="https://cdn-icons-png.flaticon.com/512/29/29302.png" class="img-fluid insta-img" style="max-height:240px;">
         {% endif %}
       </div>
 
-      <!-- Book Details -->
       <div class="col-md-8">
         <h2 class="insta-title mb-3">{{ item.book_name }}</h2>
 
@@ -124,32 +169,44 @@
         <p><span class="insta-label">First Publication:</span> {{ item.first_pub }}</p>
         <p><span class="insta-label">Last Publication:</span> {{ item.last_pub }}</p>
         <p><span class="insta-label">Book ID:</span> #{{ item.id }}</p>
+        <p><span class="insta-label">Price:</span> ৳ {{ item.price }}</p>
       </div>
     </div>
 
     <hr class="my-4">
-
-    <!-- Action Buttons -->
+     {% if is_adm %}
     <div class="d-flex justify-content-center gap-3 mt-3">
-
-      <a href="{% url 'edit_book' pk=item.id %}"
-         class="btn insta-btn btn-edit shadow-sm">
-        ✏️ Edit
-      </a>
-
-      <a href="{% url 'delete_book' pk=item.id %}"
-         class="btn insta-btn btn-delete shadow-sm"
-         onclick="return confirm('Are you sure you want to delete this book?');">
-        🗑️ Delete
-      </a>
-
-      <a href="{% url 'show_books' %}"
-         class="btn insta-btn btn-back shadow-sm">
-        ← Back
-      </a>
-
+      <a href="{% url 'edit_book' id=item.id %}" class="btn insta-btn btn-edit">Edit Book</a>
+      <a href="{% url 'read_book' item.id %}" class="btn insta-btn btn-edit">Read</a>
+      <a href="{% url 'delete_book' pk=item.id %}" class="btn insta-btn btn-delete" onclick="return confirm('Are you sure?');">Delete</a>
+      <a href="{% url 'show_books' %}" class="btn insta-btn btn-back">← Back</a>
     </div>
+    {% else %}
+    <div class="d-flex justify-content-center gap-3 mt-3">
+      <a href="{% url 'edit_book' pk=item.id %}" class="btn insta-btn btn-edit">Make Order</a>
+      <a href="{% url 'read_book' item.id %}" class="btn insta-btn btn-edit">Read</a>
+      <a href="{% url 'delete_book' pk=item.id %}" class="btn insta-btn btn-delete" onclick="return confirm('Are you sure?');">Purchase</a>
+      <a href="{% url 'show_books' %}" class="btn insta-btn btn-back">← Back</a>
+    </div>
+    {% endif %}
+
   </div>
+
+{% else %}
+
+  <!-- NON AUTHENTICATED USER VIEW -->
+
+  <div class="login-warning mx-auto" style="max-width:600px;">
+    <h2>🔒 Login Required</h2>
+    <p>
+      To view full book details, please login to your account.<br>
+      Enjoy premium access to our library after login.
+    </p>
+    <a href="{% url 'user_login' %}?next={{ request.path }}" class="login-btn mt-3 d-inline-block">Login Now →</a>
+  </div>
+
+{% endif %}
+
 </div>
 
 {% endblock %}

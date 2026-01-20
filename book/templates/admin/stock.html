@@ -1,0 +1,55 @@
+{% extends "index.html" %}
+{% block content %}
+<div style="
+    max-width: 900px; 
+    margin: 30px auto; 
+    padding: 25px; 
+    border-radius: 20px; 
+    background: linear-gradient(135deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5); 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3); 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+">
+
+    <!-- Book Title -->
+    <h2 style="
+        text-align: center; 
+        font-size: 32px; 
+        font-weight: 700; 
+        margin-bottom: 8px;
+        text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+    ">
+    
+    </h2>
+
+    <!-- Author -->
+    <p style="
+        text-align: center; 
+        font-size: 18px; 
+        margin-bottom: 25px;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    ">
+        
+    </p>
+
+   
+    
+        <div id="stock" class="profile-card">
+<h2>📚 Book Stock</h2>
+
+<div class="stock-grid">
+{% for book in all_book %}
+<div class="stock-card">
+<h3>{{ book.book_name }}</h3>
+<p><b>Price:</b> {{ book.price }}</p>
+<p><b>Stock:</b> {{ book.stock }}</p>
+
+<a href="{% url 'delete_book' book.id %}" class="badge" style="background:#ff415e;color:white;">Delete</a>
+</div>
+{% endfor %}
+</div>
+
+</div>
+
+</div>
+{% endblock %}

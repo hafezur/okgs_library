@@ -1,249 +1,613 @@
 {% extends "index.html" %}
 {% block content %}
+{% if is_adm != True %}
+            <style>
+              body {
+                font-family: 'Poppins', sans-serif;
+              }
+
+              .dash-bg {
+                width: 100%;
+                min-height: 100vh;
+                background: linear-gradient(135deg, #31039b, #5add03);
+                padding: 80px 20px;
+                display: flex;
+                justify-content: center;
+              }
+
+              .dashboard-wrapper {
+                width: 100%;
+                max-width: 1200px;
+                animation: fadeIn 1s ease;
+              }
+
+              /* Welcome Box */
+              .welcome-box {
+                background: rgba(255, 255, 255, 0.15);
+                padding: 35px;
+                border-radius: 20px;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+                margin-bottom: 35px;
+                color: white;
+              }
+
+              .welcome-box h1 {
+                font-size: 32px;
+                font-weight: 700;
+              }
+
+              .admin-badge {
+                display: inline-block;
+                background: #ffdd00;
+                color: black;
+                font-weight: 600;
+                padding: 5px 12px;
+                font-size: 14px;
+                border-radius: 8px;
+                margin-left: 10px;
+              }
+
+              /* Profile Card */
+              .profile-card {
+                background: rgba(255, 255, 255, 0.18);
+                padding: 25px;
+                border-radius: 20px;
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.28);
+                box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+                color: white;
+                margin-bottom: 35px;
+                display: flex;
+                gap: 30px;
+                align-items: center;
+                position: relative;
+              }
+
+              .profile-image-wrapper {
+                position: relative;
+                width: 130px;
+                height: 130px;
+              }
+
+              .profile-image {
+                width: 130px;
+                height: 130px;
+                border-radius: 50%;
+                border: 4px solid rgba(255,255,255,0.7);
+                object-fit: cover;
+              }
+
+              .update-btn {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                background: #3498db;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: 0.3s;
+              }
+
+              .update-btn:hover {
+                background: #217dbb;
+              }
+
+              .profile-info p {
+                font-size: 15px;
+                margin: 5px 0;
+              }
+
+              /* Stats Cards */
+              .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                gap: 25px;
+              }
+
+              .card {
+                background: rgba(255, 255, 255, 0.18);
+                padding: 25px;
+                border-radius: 20px;
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.28);
+                box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+                color: white;
+                text-align: center;
+                transition: 0.3s;
+              }
+
+              .card:hover {
+                transform: translateY(-8px);
+              }
+
+              .card h2 {
+                font-size: 28px;
+                font-weight: 700;
+              }
+
+              /* Logout Button */
+              .logout-btn {
+                display: inline-block;
+                padding: 14px 32px;
+                background: #ff415e;
+                color: white;
+                border-radius: 35px;
+                font-size: 17px;
+                font-weight: 600;
+                margin-top: 45px;
+                text-decoration: none;
+                transition: 0.3s;
+              }
+
+              .logout-btn:hover {
+                background: #ff1e3c;
+              }
+
+              input[type="file"] {
+                display: none;
+              }
+
+              @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(40px); }
+                to { opacity: 1; transform: translateY(0); }
+              }
+            </style>
+
+            <div class="dash-bg">
+              <div class="dashboard-wrapper">
+                            <!--messages option start-->
+                            {% if messages %}
+                            <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+                              {% for message in messages %}
+                                <div style="
+                                  background-color: #28a745;
+                                  color: white;
+                                  padding: 15px 20px;
+                                  border-radius: 8px;
+                                  margin-bottom: 10px;
+                                  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                                  min-width: 250px;
+                                  font-weight: bold;
+                                ">
+                                  {{ message }}
+                                </div>
+                              {% endfor %}
+                            </div>
+                          {% endif %}
+
+                          <!--messages option end -->
+
+                <!-- Welcome User -->
+                <div class="welcome-box">
+                  <h1>
+                    Welcome, {{ varified_user.first_name }} {{ varified_user.last_name }} 
+                    {% if varified_user.is_staff %}
+                      <span class="admin-badge">Admin</span>
+                    {% endif %}
+                  </h1>
+                  <p>Your dashboard overview & account information.</p>
+                </div>
+
+                <!-- Profile Card -->
+                <div class="profile-card">
+                  <div class="profile-image-wrapper">
+                    {% if varified_user.profile_picture %}
+                      <img src="{{ varified_user.profile_picture.url }}" class="profile-image">
+                    {% else %}
+                      <img src="/static/default_user.png" class="profile-image">
+                    {% endif %}
+
+                    <!-- Update Profile Picture Button -->
+                    <form action="{% url 'update_profile_picture' %}" method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <label for="profilePictureInput" class="update-btn">✏️</label>
+                      <input id="profilePictureInput" type="file" name="profile_picture" onchange="this.form.submit()">
+                    </form>
+                  </div>
+
+                  <div class="profile-info">
+                    <p><strong>Email:</strong> {{ varified_user.email }}</p>
+                    <p><strong>City:</strong> {{ varified_user.city }}</p>
+                    <p><strong>Region:</strong> {{ varified_user.region }}</p>
+                    <p><strong>Country:</strong> {{ varified_user.country }}</p>
+                    <p><strong>Present Address:</strong> {{ varified_user.present_address }}</p>
+                    <p><strong>Permanent Address:</strong> {{ varified_user.permanent_address }}</p>
+                  </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                  <div class="card">
+                    <h2>📚</h2>
+                    <p>Total Books Read</p>
+                  </div>
+                  <div class="card">
+                    <h2>⭐</h2>
+                    <p>Your Rating Progress</p>
+                  </div>
+                  <div class="card">
+                    <h2>👤</h2>
+                    <p>Profile Views</p>
+                  </div>
+                </div>
+
+                <!-- Logout -->
+                <a href="/logout/" class="logout-btn">Logout</a>
+
+              </div>
+            </div>
+<!--44444444444444444444444444-->
+
+{% else %}
+
 
 <style>
-  body {
-    font-family: 'Poppins', sans-serif;
-  }
+body{font-family:'Poppins',sans-serif;}
 
-  .dash-bg {
-    width: 100%;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #31039b, #5add03);
-    padding: 80px 20px;
-    display: flex;
-    justify-content: center;
-  }
+.dash-bg{
+  min-height:100vh;
+  background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);
+  padding:80px 20px;
+  display:flex;
+  justify-content:center;
+  animation:bgAnim 12s infinite alternate;
+}
 
-  .dashboard-wrapper {
-    width: 100%;
-    max-width: 1200px;
-    animation: fadeIn 1s ease;
-  }
+@keyframes bgAnim{
+  from{filter:hue-rotate(0deg);}
+  to{filter:hue-rotate(120deg);}
+}
 
-  /* Welcome Box */
-  .welcome-box {
-    background: rgba(255, 255, 255, 0.15);
-    padding: 35px;
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
-    margin-bottom: 35px;
-    color: white;
-  }
+.dashboard-wrapper{
+  width:100%;
+  max-width:1200px;
+  animation:fadeIn 1s ease;
+}
 
-  .welcome-box h1 {
-    font-size: 32px;
-    font-weight: 700;
-  }
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(40px);}
+  to{opacity:1;transform:translateY(0);}
+}
 
-  .admin-badge {
-    display: inline-block;
-    background: #ffdd00;
-    color: black;
-    font-weight: 600;
-    padding: 5px 12px;
-    font-size: 14px;
-    border-radius: 8px;
-    margin-left: 10px;
-  }
+.welcome-box,.profile-card,.card,.blog-card,.quick-card,.order-card,.stock-card{
+  background:rgba(255,255,255,.2);
+  backdrop-filter:blur(12px);
+  border-radius:25px;
+  box-shadow:0 10px 35px rgba(0,0,0,.3);
+  color:white;
+}
 
-  /* Profile Card */
-  .profile-card {
-    background: rgba(255, 255, 255, 0.18);
-    padding: 25px;
-    border-radius: 20px;
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-    color: white;
-    margin-bottom: 35px;
-    display: flex;
-    gap: 30px;
-    align-items: center;
-    position: relative;
-  }
+.welcome-box{padding:30px;margin-bottom:25px;}
 
-  .profile-image-wrapper {
-    position: relative;
-    width: 130px;
-    height: 130px;
-  }
+.admin-badge{
+  background:white;color:#fd1d1d;
+  padding:5px 12px;border-radius:10px;
+  font-size:14px;font-weight:600;
+}
 
-  .profile-image {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    border: 4px solid rgba(255,255,255,0.7);
-    object-fit: cover;
-  }
+.stats-grid,.quick-grid,.blog-grid,.order-grid,.stock-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:25px;
+  margin-bottom:35px;
+}
 
-  .update-btn {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background: #3498db;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.3s;
-  }
+.card,.quick-card,.blog-card,.order-card,.stock-card{
+  padding:22px;text-align:center;transition:.4s;
+}
 
-  .update-btn:hover {
-    background: #217dbb;
-  }
+.card:hover,.quick-card:hover,.blog-card:hover,.order-card:hover,.stock-card:hover{
+  transform:translateY(-8px) scale(1.05);
+}
 
-  .profile-info p {
-    font-size: 15px;
-    margin: 5px 0;
-  }
+.logout-btn{
+  display:inline-block;
+  padding:12px 28px;
+  background:linear-gradient(45deg,#fd1d1d,#833ab4);
+  color:white;border-radius:30px;
+  text-decoration:none;font-weight:600;
+  transition:.3s;
+}
 
-  /* Stats Cards */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 25px;
-  }
+.logout-btn:hover{transform:scale(1.08);}
 
-  .card {
-    background: rgba(255, 255, 255, 0.18);
-    padding: 25px;
-    border-radius: 20px;
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-    color: white;
-    text-align: center;
-    transition: 0.3s;
-  }
+.profile-card{
+  padding:30px;
+  margin-bottom:35px;
+  animation:slideUp 1s ease;
+}
 
-  .card:hover {
-    transform: translateY(-8px);
-  }
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(60px);}
+  to{opacity:1;transform:translateY(0);}
+}
 
-  .card h2 {
-    font-size: 28px;
-    font-weight: 700;
-  }
+.profile-header{display:flex;align-items:center;gap:20px;}
+.profile-img{width:110px;height:110px;border-radius:50%;border:4px solid white;object-fit:cover;}
+.upload-btn{
+  background:white;color:#fd1d1d;
+  padding:6px 14px;border-radius:20px;
+  font-size:13px;cursor:pointer;
+}
 
-  /* Logout Button */
-  .logout-btn {
-    display: inline-block;
-    padding: 14px 32px;
-    background: #ff415e;
-    color: white;
-    border-radius: 35px;
-    font-size: 17px;
-    font-weight: 600;
-    margin-top: 45px;
-    text-decoration: none;
-    transition: 0.3s;
-  }
-
-  .logout-btn:hover {
-    background: #ff1e3c;
-  }
-
-  input[type="file"] {
-    display: none;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+.badge{
+  background:white;color:#fd1d1d;
+  padding:4px 10px;border-radius:12px;
+  font-size:13px;font-weight:600;
+}
 </style>
 
 <div class="dash-bg">
-  <div class="dashboard-wrapper">
-                <!--messages option start-->
-                {% if messages %}
-                <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
-                  {% for message in messages %}
-                    <div style="
-                      background-color: #28a745;
-                      color: white;
-                      padding: 15px 20px;
-                      border-radius: 8px;
-                      margin-bottom: 10px;
-                      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-                      min-width: 250px;
-                      font-weight: bold;
-                    ">
-                      {{ message }}
-                    </div>
-                  {% endfor %}
-                </div>
-              {% endif %}
+<div class="dashboard-wrapper">
 
-              <!--messages option end -->
-
-    <!-- Welcome User -->
-    <div class="welcome-box">
-      <h1>
-        Welcome, {{ varified_user.first_name }} {{ varified_user.last_name }} 
-        {% if varified_user.is_staff %}
-          <span class="admin-badge">Admin</span>
-        {% endif %}
-      </h1>
-      <p>Your dashboard overview & account information.</p>
-    </div>
-
-    <!-- Profile Card -->
-    <div class="profile-card">
-      <div class="profile-image-wrapper">
-        {% if varified_user.profile_picture %}
-          <img src="{{ varified_user.profile_picture.url }}" class="profile-image">
-        {% else %}
-          <img src="/static/default_user.png" class="profile-image">
-        {% endif %}
-
-        <!-- Update Profile Picture Button -->
-        <form action="{% url 'update_profile_picture' %}" method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <label for="profilePictureInput" class="update-btn">✏️</label>
-          <input id="profilePictureInput" type="file" name="profile_picture" onchange="this.form.submit()">
-        </form>
-      </div>
-
-      <div class="profile-info">
-        <p><strong>Email:</strong> {{ varified_user.email }}</p>
-        <p><strong>City:</strong> {{ varified_user.city }}</p>
-        <p><strong>Region:</strong> {{ varified_user.region }}</p>
-        <p><strong>Country:</strong> {{ varified_user.country }}</p>
-        <p><strong>Present Address:</strong> {{ varified_user.present_address }}</p>
-        <p><strong>Permanent Address:</strong> {{ varified_user.permanent_address }}</p>
-      </div>
-    </div>
-
-    <!-- Stats Cards -->
-    <div class="stats-grid">
-      <div class="card">
-        <h2>📚</h2>
-        <p>Total Books Read</p>
-      </div>
-      <div class="card">
-        <h2>⭐</h2>
-        <p>Your Rating Progress</p>
-      </div>
-      <div class="card">
-        <h2>👤</h2>
-        <p>Profile Views</p>
-      </div>
-    </div>
-
-    <!-- Logout -->
-    <a href="/logout/" class="logout-btn">Logout</a>
-
-  </div>
+<!-- Welcome -->
+<div class="welcome-box">
+  <h1>Admin Panel - {{ varified_user.first_name }} <span class="admin-badge">Admin</span></h1>
+  <p>Manage Books, Orders, Stock, Blogs & Categories</p>
 </div>
 
+<!-- Profile -->
+<div class="profile-card">
+<div class="profile-header">
+
+{% if varified_user.profile_picture %}
+<img src="{{ varified_user.profile_picture.url }}" class="profile-img">
+{% else %}
+<img src="/static/default_user.png" class="profile-img">
+{% endif %}
+
+<div>
+<h3>{{ varified_user.first_name }} {{ varified_user.last_name }}</h3>
+<p>{{ varified_user.email }}</p>
+
+<form method="POST" action="{% url 'update_profile_picture' %}" enctype="multipart/form-data">
+{% csrf_token %}
+<input type="file" name="profile_picture" id="uploadPic" hidden onchange="this.form.submit()">
+<label for="uploadPic" class="upload-btn">Update Photo</label>
+</form>
+</div>
+
+</div>
+</div>
+
+<!-- Menu -->
+<div class="stats-grid">
+<div class="card">📦<p>Total Orders</p><a href="#orders" class="logout-btn">View</a></div>
+<div class="card">📚<p>Book Stock</p><a href="{% url 'show_stock' %}" class="logout-btn">View</a></div>
+
+<div class="card">
+➕
+<p>Add Book</p>
+<a href="{% url 'store_book' %}" class="logout-btn">Add</a>
+</div>
+
+<div class="card">
+📚
+<p>All Books</p>
+<a href="{% url 'show_books' %}" class="logout-btn">View</a>
+</div>
+
+<div class="card">
+🏷
+<p>Add Category</p>
+<a href="{% url 'add_category' %}" class="logout-btn">Add</a>
+</div>
+</div>
+
+<!-- Orders -->
+<div id="orders" class="profile-card">
+<h2>📦 Book Orders</h2>
+<div class="order-grid">
+{% for order in orders %}
+<div class="order-card">
+<h3>{{ order.book.book_name }}</h3>
+<p><b>User:</b> {{ order.user.first_name }}</p>
+<p><b>Qty:</b> {{ order.quantity }}</p>
+<p><b>Status:</b> <span class="badge">{{ order.status }}</span></p>
+</div>
+{% endfor %}
+</div>
+</div>
+
+<!-- Stock -->
+<div id="stock" class="profile-card">
+<h2>📚 Book Stock</h2>
+<div class="stock-grid">
+{% for book in all_book %}
+<div class="stock-card">
+<h3>{{ book.book_name }}</h3>
+<p><b>Price:</b> {{ book.price }}</p>
+<p><b>Stock:</b> {{ book.stock }}</p>
+<a href="{% url 'delete_book' book.id %}" class="badge" style="background:#ff415e;color:white;">Delete</a>
+</div>
+{% endfor %}
+</div>
+</div>
+
+<!-- Add Book -->
+<div class="profile-card">
+<h2>📚 Book Manager</h2>
+
+<div class="row align-items-center">
+
+<!-- Carousel Section -->
+<div class="col-md-7">
+
+<div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
+
+  <div class="carousel-inner">
+
+    {% for book in all_book %}
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+
+      <div style="text-align:center;max-width:85%;margin:auto;">
+
+        {% if book.book_image %}
+          <img src="{{ book.book_image.url }}" class="d-block w-100" 
+               style="height:200px;object-fit:cover;border-radius:18px;">
+        {% else %}
+          <img src="https://via.placeholder.com/600x200?text=No+Image" 
+               class="d-block w-100" style="border-radius:18px;">
+        {% endif %}
+
+        <h5 class="mt-2">{{ book.book_name }}</h5>
+        <p style="font-size:14px;">
+          {{ book.author }} | {{ book.category.name }}
+        </p>
+        <p style="font-size:13px;">
+          ৳ {{ book.price }} | Stock: {{ book.stock }}
+        </p>
+      </div>
+
+    </div>
+    {% endfor %}
+
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+
+  <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+
+</div>
+
+</div>
+
+<!-- Add Book Form -->
+<div class="col-md-5">
+
+<h5 class="mb-3">➕ Add New Book</h5>
+
+<form method="POST" action="{% url 'store_book' %}" enctype="multipart/form-data">
+{% csrf_token %}
+
+<input name="book_name" class="form-control mb-2" placeholder="Book Name">
+
+<input name="author" class="form-control mb-2" placeholder="Author Name">
+
+<input name="price" type="number" class="form-control mb-2" placeholder="Price">
+
+<input name="stock" type="number" class="form-control mb-2" placeholder="Stock">
+
+<select name="category" class="form-control mb-2">
+  {% for cat in all_category %}
+  <option value="{{ cat.id }}">{{ cat.name }}</option>
+  {% endfor %}
+</select>
+
+<input type="file" name="book_image" class="form-control mb-3">
+
+<button class="logout-btn w-100">Save Book</button>
+
+</form>
+
+</div>
+
+</div>
+</div>
+
+<!-- Add Category -->
+ <div class="profile-card">
+<h2>🏷 Category Manager</h2>
+
+<div class="row align-items-center">
+
+<!-- Carousel Section -->
+<div class="col-md-7">
+
+<div id="categoryCarousel" class="carousel slide" data-bs-ride="carousel">
+
+  <div class="carousel-inner">
+
+    {% for cat in all_category %}
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+
+      <div style="text-align:center;max-width:85%;margin:auto;">
+
+        {% if cat.category_image %}
+          <img src="{{ cat.category_image.url }}" class="d-block w-100" 
+               style="height:200px;object-fit:cover;border-radius:18px;">
+        {% else %}
+          <img src="https://via.placeholder.com/600x200?text=No+Image" 
+               class="d-block w-100" style="border-radius:18px;">
+        {% endif %}
+
+        <h5 class="mt-2">{{ cat.name }}</h5>
+        <p style="font-size:14px;">{{ cat.description|truncatechars:80 }}</p>
+      </div>
+
+    </div>
+    {% endfor %}
+
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#categoryCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+
+  <button class="carousel-control-next" type="button" data-bs-target="#categoryCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+
+</div>
+
+</div>
+
+<!-- Add Category Form -->
+<div class="col-md-5">
+
+<h5 class="mb-3">➕ Add New Category</h5>
+
+<form method="POST" action="{% url 'add_category' %}" enctype="multipart/form-data">
+{% csrf_token %}
+
+<input name="name" class="form-control mb-2" placeholder="Category Name">
+
+<textarea name="description" class="form-control mb-2" placeholder="Category Description"></textarea>
+
+<input type="file" name="category_image" class="form-control mb-3">
+
+<button class="logout-btn w-100">Save Category</button>
+
+</form>
+
+</div>
+
+</div>
+</div>
+
+<!-- end category-->
+
+<!-- Blog -->
+<div class="profile-card">
+<h2>📝 Blog Content</h2>
+<div class="blog-grid">
+{% for blog in blogs %}
+<div class="blog-card">
+<h3>{{ blog.title }}</h3>
+<p>{{ blog.short_description }}</p>
+<a href="{% url 'blog_detail' blog.id %}" class="logout-btn">Read</a>
+</div>
+{% endfor %}
+</div>
+</div>
+
+<a href="/logout/" class="logout-btn">Logout</a>
+
+</div>
+</div>
+
+{% endif %}
 {% endblock %}
