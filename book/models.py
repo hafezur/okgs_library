@@ -77,3 +77,28 @@ class BookStoreModel(models.Model):
     def __str__(self):
         return self.book_name
 
+class Order(models.Model):
+    STATUS = (
+        ('Pending', 'Pending'),
+        ('Confirmed', 'Confirmed'),
+        ('Delivered', 'Delivered'),
+        ('Cancelled', 'Cancelled'),
+    )
+
+    user = models.ForeignKey(UserRegistration, on_delete=models.CASCADE, related_name="orders")
+    book = models.ForeignKey(BookStoreModel, on_delete=models.CASCADE, related_name="orders")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="orders")
+
+    quantity = models.PositiveIntegerField(default=1)
+    total_price = models.IntegerField()
+    status = models.CharField(max_length=20, choices=STATUS, default='Pending')
+
+    ordered_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        self.total_price = self.book.price * self.quantity
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.user.email} - {self.book.book_name}"
