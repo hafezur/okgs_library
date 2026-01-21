@@ -84,7 +84,7 @@ class Order(models.Model):
         ('Delivered', 'Delivered'),
         ('Cancelled', 'Cancelled'),
     )
-
+    id= models.IntegerField(primary_key=True)
     user = models.ForeignKey(UserRegistration, on_delete=models.CASCADE, related_name="orders")
     book = models.ForeignKey(BookStoreModel, on_delete=models.CASCADE, related_name="orders")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="orders")

@@ -29,10 +29,11 @@ admin.site.register(BookStoreModel, BookStoreModelAdmin)
 
 admin.site.register(UserRegistration) """
 
-from book.models import Category
+from book.models import Category,Order
 # Register your models here.
 
     
 
 
 admin.site.register(Category)
+admin.site.register(Order)
